@@ -45,14 +45,13 @@ int CMP_CALLMODEL compareImprovementVar(const pricerec *current, const pricerec 
   register lprec *lp = current->lp;
   register LPSREAL  testvalue, margin = PREC_IMPROVEGAP;
   int currentcolno, currentvarno = current->varno,
-      candidatecolno, candidatevarno = candidate->varno;
+      candidatevarno = candidate->varno;
   MYBOOL isdual = candidate->isdual;
 
   if(isdual) {
     candidatevarno = lp->var_basic[candidatevarno];
     currentvarno   = lp->var_basic[currentvarno];
   }
-  candidatecolno = candidatevarno - lp->rows;
   currentcolno   = currentvarno - lp->rows;
 
   /* Do pivot-based selection unless Bland's (first index) rule is active */
@@ -99,6 +98,7 @@ int CMP_CALLMODEL compareImprovementVar(const pricerec *current, const pricerec 
 #ifdef UseSortOnColumnLength
     /* Prevent long columns from entering the basis */
     if(result == COMP_PREFERNONE) {
+      int candidatecolno = candidatevarno - lp->rows;
       if(candidatecolno > 0)
         testvalue = mat_collength(lp->matA, candidatecolno) +
                     (is_obj_in_basis(lp) && (lp->obj[candidatecolno] != 0) ? 1 : 0);
@@ -158,13 +158,12 @@ int CMP_CALLMODEL compareSubstitutionVar(const pricerec *current, const pricerec
                   margin = current->theta;
   MYBOOL isdual = candidate->isdual, candbetter;
   int    currentcolno, currentvarno = current->varno,
-         candidatecolno, candidatevarno = candidate->varno;
+         candidatevarno = candidate->varno;
 
   if(!isdual) {
     candidatevarno = lp->var_basic[candidatevarno];
     currentvarno   = lp->var_basic[currentvarno];
   }
-  candidatecolno = candidatevarno - lp->rows;
   currentcolno   = currentvarno - lp->rows;
 
   /* Compute the ranking test metric. */
@@ -239,6 +238,7 @@ int CMP_CALLMODEL compareSubstitutionVar(const pricerec *current, const pricerec
 #ifdef UseSortOnColumnLength
       /* Prevent long columns from entering the basis */
       if(result == COMP_PREFERNONE) {
+        int candidatecolno = candidatevarno - lp->rows;
         if(candidatecolno > 0)
           testvalue = mat_collength(lp->matA, candidatecolno) +
                       (is_obj_in_basis(lp) && (lp->obj[candidatecolno] != 0) ? 1 : 0);

@@ -374,6 +374,8 @@ INLINE LPSREAL presolve_roundval(lprec *lp, LPSREAL value)
   return( value );
 }
 
+
+#ifndef R_EMBEDDED_LPSOLVE
 INLINE MYBOOL presolve_mustupdate(lprec *lp, int colnr)
 {
 #if 0
@@ -384,6 +386,8 @@ INLINE MYBOOL presolve_mustupdate(lprec *lp, int colnr)
           my_infinite(lp, lp->orig_upbo[lp->rows+colnr]) );
 #endif
 }
+#endif
+
 
 INLINE LPSREAL presolve_sumplumin(lprec *lp, int item, psrec *ps, MYBOOL doUpper)
 {
@@ -459,7 +463,7 @@ STATIC MYBOOL presolve_debugmap(presolverec *psdata, char *caption)
 {
   lprec *lp = psdata->lp;
   MATrec *mat = lp->matA;
-  int    colnr, ix, ie, nx, jx, je, *cols, *rows, n;
+  int    colnr, ix, ie, nx, jx, je, *cols, *rows;
   int    nz = mat->col_end[lp->columns] - 1;
   MYBOOL status = FALSE;
 
@@ -487,7 +491,7 @@ STATIC MYBOOL presolve_debugmap(presolverec *psdata, char *caption)
       }
       cols = psdata->rows->next[COL_MAT_ROWNR(*rows)];
       ie = cols[0];
-      n = 0;
+
       for(ix = 1; ix <= ie; ix++) {
         nx = cols[ix];
         if((nx < 0) || (nx > nz)) {
@@ -746,6 +750,7 @@ INLINE int presolve_nextrecord(psrec *ps, int recnr, int *previtem)
 
   return( status );
 }
+
 INLINE int presolve_nextcol(presolverec *psdata, int rownr, int *previtem)
 /* Find the first active (non-eliminated) nonzero column in rownr after prevcol */
 {
@@ -1990,7 +1995,7 @@ STATIC int presolve_rowfixzero(presolverec *psdata, int rownr, int *nv)
 STATIC MYBOOL presolve_colfixdual(presolverec *psdata, int colnr, LPSREAL *fixValue, int *status)
 {
   lprec   *lp = psdata->lp;
-  MYBOOL  hasOF, isMI, isDualFREE = TRUE;
+  MYBOOL  hasOF, isDualFREE = TRUE;
   int     i, ix, ie, *rownr, signOF;
   LPSREAL    *value, loX, upX, eps = psdata->epsvalue;
   MATrec  *mat = lp->matA;
@@ -2002,7 +2007,7 @@ STATIC MYBOOL presolve_colfixdual(presolverec *psdata, int colnr, LPSREAL *fixVa
      (fabs(upX-loX) < lp->epsvalue) ||
      SOS_is_member_of_type(lp->SOS, colnr, SOSn))
     return( FALSE );
-  isMI = (MYBOOL) (upX <= 0);
+  //@FS: unused// isMI = (MYBOOL) (upX <= 0);
 
   /* Retrieve OF (standard form assuming maximization) */
   ix = mat->col_end[colnr - 1];
@@ -4863,7 +4868,7 @@ STATIC int presolve_boundconflict(presolverec *psdata, int baserowno, int colno)
 STATIC int presolve_columns(presolverec *psdata, int *nCoeffChanged, int *nConRemove, int *nVarFixed, int *nBoundTighten, int *nSum)
 {
   lprec    *lp = psdata->lp;
-  MYBOOL   candelete, isOFNZ, unbounded,
+  MYBOOL   candelete, isOFNZ,
            probefix = is_presolve(lp, PRESOLVE_PROBEFIX),
 #if 0
            probereduce = is_presolve(lp, PRESOLVE_PROBEREDUCE),
@@ -4885,7 +4890,7 @@ STATIC int presolve_columns(presolverec *psdata, int *nCoeffChanged, int *nConRe
     countNZ = presolve_collength(psdata, j);
     isOFNZ  = isnz_origobj(lp, j);
     Value1  = get_lowbo(lp, j);
-    unbounded = is_unbounded(lp, j);
+    //@FS: unused// unbounded = is_unbounded(lp, j);
 
     /* Clear unnecessary semicont-definitions */
     if((lp->sc_vars > 0) && (Value1 == 0) && is_semicont(lp, j))
@@ -5308,9 +5313,10 @@ STATIC int presolve_rows(presolverec *psdata, int *nCoeffChanged, int *nConRemov
           MYBOOL isSOS     = (MYBOOL) (SOS_is_member(lp->SOS, 0, j) != FALSE),
                  deleteSOS = isSOS && presolve_candeletevar(psdata, j);
           if((Value1 != 0) && deleteSOS) {
-            if(!presolve_fixSOS1(psdata, j, Value1, &iConRemove, &iVarFixed))
+            if(!presolve_fixSOS1(psdata, j, Value1, &iConRemove, &iVarFixed)) {
               status = presolve_setstatus(psdata, INFEASIBLE);
-              psdata->forceupdate = TRUE;
+            }
+            psdata->forceupdate = TRUE; // @FS #FIXME: Does this belong into the if clause above? If the code was correct before my changed version is also correct! But the intention was misleading.
           }
           else {
             if(!presolve_colfix(psdata, j, Value1, (MYBOOL) !isSOS, NULL))
