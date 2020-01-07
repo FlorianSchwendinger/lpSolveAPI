@@ -29,5 +29,5 @@
 #define FREE(ptr) if (ptr != NULL) {free(ptr), ptr = NULL;} else
 
 // @FS: This is only used once, so there is no reason to define this!
-#define MALLOCCPY(nptr, optr, nr, type)\
-  (MALLOC(nptr, nr, type), (nptr != NULL) ? memcpy(nptr, optr, (size_t)((nr) * sizeof(*optr))) : 0, nptr)
+// #define MALLOCCPY(nptr, optr, nr, type)\
+//   (MALLOC(nptr, nr, type), (nptr != NULL) ? memcpy(nptr, optr, (size_t)((nr) * sizeof(*optr))) : 0, nptr)
