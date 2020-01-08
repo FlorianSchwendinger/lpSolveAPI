@@ -194,14 +194,14 @@ STATIC MYBOOL inc_mat_space(MATrec *mat, int mindelta)
 
 STATIC MYBOOL inc_matrow_space(MATrec *mat, int deltarows)
 {
-  int    rowsum, oldrowsalloc;
+  int    rowsum;
   MYBOOL status = TRUE;
 
   /* Adjust lp row structures */
   if(mat->rows+deltarows >= mat->rows_alloc) {
 
     /* Update memory allocation and sizes */
-    oldrowsalloc = mat->rows_alloc;
+    //@FS: unused// oldrowsalloc = mat->rows_alloc;
     deltarows = DELTA_SIZE(deltarows, mat->rows);
     SETMAX(deltarows, DELTAROWALLOC);
     mat->rows_alloc += deltarows;
@@ -3322,7 +3322,7 @@ STATIC int prod_Ax(lprec *lp, int *coltarget, LPSREAL *input, int *nzinput,
                               LPSREAL *output, int *nzoutput, int roundmode)
 /* prod_Ax is only used in fimprove; note that it is NOT VALIDATED/verified as of 20030801 - KE */
 {
-  int      j, colnr, ib, ie, vb, ve;
+  int      j, colnr, ib, ie, vb;
   MYBOOL   localset, localnz = FALSE, isRC;
   MATrec   *mat = lp->matA;
   LPSREAL     sdp;
@@ -3352,7 +3352,7 @@ STATIC int prod_Ax(lprec *lp, int *coltarget, LPSREAL *input, int *nzinput,
 
   /* Scan the columns */
   vb = 1;
-  ve = coltarget[0];
+  //@FS: unused// ve = coltarget[0];
   for(vb = 1; vb <= coltarget[0]; vb++) {
     colnr = coltarget[vb];
     j = lp->is_basic[colnr];

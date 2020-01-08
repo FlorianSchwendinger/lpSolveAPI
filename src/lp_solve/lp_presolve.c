@@ -751,7 +751,7 @@ INLINE int presolve_nextrecord(psrec *ps, int recnr, int *previtem)
   return( status );
 }
 
-INLINE int presolve_nextcol(presolverec *psdata, int rownr, int *previtem)
+int presolve_nextcol(presolverec *psdata, int rownr, int *previtem)
 /* Find the first active (non-eliminated) nonzero column in rownr after prevcol */
 {
   return( presolve_nextrecord(psdata->rows, rownr, previtem) );
@@ -760,7 +760,7 @@ INLINE int presolve_lastcol(presolverec *psdata, int rownr)
 {
   return( presolve_nextrecord(psdata->rows, rownr, NULL) );
 }
-INLINE int presolve_nextrow(presolverec *psdata, int colnr, int *previtem)
+int presolve_nextrow(presolverec *psdata, int colnr, int *previtem)
 /* Find the first active (non-eliminated) nonzero row in colnr after prevrow */
 {
   return( presolve_nextrecord(psdata->cols, colnr, previtem) );
@@ -4875,7 +4875,7 @@ STATIC int presolve_columns(presolverec *psdata, int *nCoeffChanged, int *nConRe
 #endif
            colfixdual = is_presolve(lp, PRESOLVE_COLFIXDUAL);
   int      iCoeffChanged = 0, iConRemove = 0, iVarFixed = 0, iBoundTighten = 0,
-           status = RUNNING, ix, j, countNZ, item;
+           status = RUNNING, ix, j, countNZ;
   LPSREAL     Value1;
 
   for(j = firstActiveLink(psdata->cols->varmap); (j != 0) && (status == RUNNING); ) {
@@ -4897,7 +4897,7 @@ STATIC int presolve_columns(presolverec *psdata, int *nCoeffChanged, int *nConRe
       set_semicont(lp, j, FALSE);
 
     candelete = FALSE;
-    item = 0;
+    //@FS: unused// item = 0;
     ix = lp->rows + j;
 
     /* Check if the variable is unused */

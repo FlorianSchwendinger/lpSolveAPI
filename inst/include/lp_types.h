@@ -186,7 +186,6 @@
     #define INLINE __inline
   #else
     #define INLINE static
-    // #define INLINE extern inline
   #endif
 #endif
 
