@@ -15,5 +15,3 @@ MYINLINE void set_bitoff(MYBOOL *bitarray, int item)
   bitarray[item / 8] &= ~(1 << (item % 8));
 }
 */
-
-

@@ -5393,12 +5393,12 @@ MYBOOL __WINAPI set_BFP(lprec *lp, char *filename)
 
    /* If the handle is valid, try to get the function addresses. */
     if(lp->hBFP != NULL) {
-      lp->bfp_compatible           = (BFPbool_lpintintint *)
-                                      dlsym(lp->hBFP, "bfp_compatible");
+      *(void **)(&lp->bfp_compatible) = dlsym(lp->hBFP, "bfp_compatible");
+      // lp->bfp_compatible           = (BFPbool_lpintintint)dlsym(lp->hBFP, "bfp_compatible");
       if(lp->bfp_compatible == NULL) {
         result = LIB_NOINFO;
       } else if(lp->bfp_compatible(lp, BFPVERSION, MAJORVERSION, sizeof(LPSREAL))) {
-
+        /*
         lp->bfp_name                 = (BFPchar *)
                                         dlsym(lp->hBFP, "bfp_name");
         lp->bfp_free                 = (BFP_lp *)
@@ -5465,6 +5465,42 @@ MYBOOL __WINAPI set_BFP(lprec *lp, char *filename)
                                         dlsym(lp->hBFP, "bfp_isSetI");
         lp->bfp_findredundant        = (BFPint_lpintrealcbintint *)
                                         dlsym(lp->hBFP, "bfp_findredundant");
+        */
+
+        MAKE_PEDANTIC_HAPPY(lp->bfp_name) = dlsym(lp->hBFP, "bfp_name");
+        MAKE_PEDANTIC_HAPPY(lp->bfp_free) = dlsym(lp->hBFP, "bfp_free");
+        MAKE_PEDANTIC_HAPPY(lp->bfp_resize) = dlsym(lp->hBFP, "bfp_resize");
+        MAKE_PEDANTIC_HAPPY(lp->bfp_nonzeros) = dlsym(lp->hBFP, "bfp_nonzeros");
+        MAKE_PEDANTIC_HAPPY(lp->bfp_memallocated) = dlsym(lp->hBFP, "bfp_memallocated");
+        MAKE_PEDANTIC_HAPPY(lp->bfp_restart) = dlsym(lp->hBFP, "bfp_restart");
+        MAKE_PEDANTIC_HAPPY(lp->bfp_mustrefactorize) = dlsym(lp->hBFP, "bfp_mustrefactorize");
+        MAKE_PEDANTIC_HAPPY(lp->bfp_preparefactorization) = dlsym(lp->hBFP, "bfp_preparefactorization");
+        MAKE_PEDANTIC_HAPPY(lp->bfp_factorize) = dlsym(lp->hBFP, "bfp_factorize");
+        MAKE_PEDANTIC_HAPPY(lp->bfp_finishupdate) = dlsym(lp->hBFP, "bfp_finishupdate");
+        MAKE_PEDANTIC_HAPPY(lp->bfp_ftran_normal) = dlsym(lp->hBFP, "bfp_ftran_normal");
+        MAKE_PEDANTIC_HAPPY(lp->bfp_ftran_prepare) = dlsym(lp->hBFP, "bfp_ftran_prepare");
+        MAKE_PEDANTIC_HAPPY(lp->bfp_btran_normal) = dlsym(lp->hBFP, "bfp_btran_normal");
+        MAKE_PEDANTIC_HAPPY(lp->bfp_status) = dlsym(lp->hBFP, "bfp_status");
+        MAKE_PEDANTIC_HAPPY(lp->bfp_implicitslack) = dlsym(lp->hBFP, "bfp_implicitslack");
+        MAKE_PEDANTIC_HAPPY(lp->bfp_indexbase) = dlsym(lp->hBFP, "bfp_indexbase");
+        MAKE_PEDANTIC_HAPPY(lp->bfp_rowoffset) = dlsym(lp->hBFP, "bfp_rowoffset");
+        MAKE_PEDANTIC_HAPPY(lp->bfp_pivotmax) = dlsym(lp->hBFP, "bfp_pivotmax");
+        MAKE_PEDANTIC_HAPPY(lp->bfp_init) = dlsym(lp->hBFP, "bfp_init");
+        MAKE_PEDANTIC_HAPPY(lp->bfp_pivotalloc) = dlsym(lp->hBFP, "bfp_pivotalloc");
+        MAKE_PEDANTIC_HAPPY(lp->bfp_colcount) = dlsym(lp->hBFP, "bfp_colcount");
+        MAKE_PEDANTIC_HAPPY(lp->bfp_canresetbasis) = dlsym(lp->hBFP, "bfp_canresetbasis");
+        MAKE_PEDANTIC_HAPPY(lp->bfp_finishfactorization) = dlsym(lp->hBFP, "bfp_finishfactorization");
+        MAKE_PEDANTIC_HAPPY(lp->bfp_updaterefactstats) = dlsym(lp->hBFP, "bfp_updaterefactstats");
+        MAKE_PEDANTIC_HAPPY(lp->bfp_prepareupdate) = dlsym(lp->hBFP, "bfp_prepareupdate");
+        MAKE_PEDANTIC_HAPPY(lp->bfp_pivotRHS) = dlsym(lp->hBFP, "bfp_pivotRHS");
+        MAKE_PEDANTIC_HAPPY(lp->bfp_btran_double) = dlsym(lp->hBFP, "bfp_btran_double");
+        MAKE_PEDANTIC_HAPPY(lp->bfp_efficiency) = dlsym(lp->hBFP, "bfp_efficiency");
+        MAKE_PEDANTIC_HAPPY(lp->bfp_pivotvector) = dlsym(lp->hBFP, "bfp_pivotvector");
+        MAKE_PEDANTIC_HAPPY(lp->bfp_pivotcount) = dlsym(lp->hBFP, "bfp_pivotcount");
+        MAKE_PEDANTIC_HAPPY(lp->bfp_refactcount) = dlsym(lp->hBFP, "bfp_refactcount");
+        MAKE_PEDANTIC_HAPPY(lp->bfp_isSetI) = dlsym(lp->hBFP, "bfp_isSetI");
+        MAKE_PEDANTIC_HAPPY(lp->bfp_findredundant) = dlsym(lp->hBFP, "bfp_findredundant");
+
       } else {
         result = LIB_VERINVALID;
       }
@@ -5653,21 +5689,16 @@ MYBOOL __WINAPI set_XLI(lprec *lp, char *filename)
 
    /* If the handle is valid, try to get the function addresses. */
     if(lp->hXLI != NULL) {
-      lp->xli_compatible           = (XLIbool_lpintintint *)
-                                      dlsym(lp->hXLI, "xli_compatible");
-      if(lp->xli_compatible == NULL)
+      MAKE_PEDANTIC_HAPPY(lp->xli_compatible) = dlsym(lp->hXLI, "xli_compatible");
+      if(lp->xli_compatible == NULL) {
         result = LIB_NOINFO;
-      else if(lp->xli_compatible(lp, XLIVERSION, MAJORVERSION, sizeof(LPSREAL))) {
-
-        lp->xli_name                 = (XLIchar *)
-                                        dlsym(lp->hXLI, "xli_name");
-        lp->xli_readmodel            = (XLIbool_lpcharcharcharint *)
-                                        dlsym(lp->hXLI, "xli_readmodel");
-        lp->xli_writemodel           = (XLIbool_lpcharcharbool *)
-                                        dlsym(lp->hXLI, "xli_writemodel");
-      }
-      else
+      } else if(lp->xli_compatible(lp, XLIVERSION, MAJORVERSION, sizeof(LPSREAL))) {
+        MAKE_PEDANTIC_HAPPY(lp->xli_name) = dlsym(lp->hXLI, "xli_name");
+        MAKE_PEDANTIC_HAPPY(lp->xli_readmodel) = dlsym(lp->hXLI, "xli_readmodel");
+        MAKE_PEDANTIC_HAPPY(lp->xli_writemodel) = dlsym(lp->hXLI, "xli_writemodel");
+      } else {
         result = LIB_VERINVALID;
+      }
     }
   #endif
     else

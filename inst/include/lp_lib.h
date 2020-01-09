@@ -63,6 +63,9 @@
 # define isnan(x) FALSE
 #endif
 
+// https://pubs.opengroup.org/onlinepubs/009695399/functions/dlsym.html
+#define MAKE_PEDANTIC_HAPPY(fptr) *(void **)(&fptr)
+
 #define SETMASK(variable, mask)     variable |= mask
 #define CLEARMASK(variable, mask)   variable &= ~(mask)
 #define TOGGLEMASK(variable, mask)  variable ^= mask

@@ -45,6 +45,26 @@
 #endif
 
 
+int presolve_rowlength(presolverec *psdata, int rownr)
+{
+  int *items = psdata->rows->next[rownr];
+
+  if(items == NULL)
+    return( 0 );
+  else
+    return( items[0] );
+}
+
+int presolve_collength(presolverec *psdata, int colnr)
+{
+  int *items = psdata->cols->next[colnr];
+  if(items == NULL)
+    return( 0 );
+  else
+    return( items[0] );
+}
+
+
 #define presolve_setstatus(one, two)  presolve_setstatusex(one, two, __LINE__, __FILE__)
 STATIC int presolve_setstatusex(presolverec *psdata, int status, int lineno, char *filename)
 {
