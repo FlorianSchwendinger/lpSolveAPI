@@ -6,7 +6,7 @@
 #elif defined EnhTime
 # include <windows.h>
 #else
-# include <sys/timeb.h>
+# include <time.h>
 #endif
 
 #include <stdlib.h>
@@ -844,10 +844,7 @@ double timeNow(void)
   }
   return( timeBase + (double) now.QuadPart/(double) freq.QuadPart );
 #else
-  struct timeb buf;
-
-  ftime(&buf);
-  return((double)buf.time+((double) buf.millitm)/1000.0);
+  return((double)time(NULL));
 #endif
 }
 
