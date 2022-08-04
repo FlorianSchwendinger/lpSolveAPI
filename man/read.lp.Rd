@@ -21,9 +21,9 @@ read.lp(filename, type = c("lp", "mps", "freemps"), verbose = "neutral",
     \describe{
       \item{\code{free}}{Use the free MPS format even when \code{type = "mps"}. If not specified, the fixed MPS format is used. This option has no effect when \code{type = "freemps"} but will not result in an error or a warning.}
 
-      \item{\code{ibm}}{Interpret integer variables without bounds as binary variables per the original IBM standard. By default, lp_solve interprets integer variables without bounds as having no upper bound.}
+      \item{\code{ibm}}{Interpret integer variables without bounds as binary variables per the original IBM standard. By default, \code{lp_solve} interprets integer variables without bounds as having no upper bound.}
 
-      \item{\code{negobjconst}}{Interpret the objective constant with an opposite sign. Some solvers interpret the objective constant as a value in the RHS and negate it when brought to the LHS. This option allows lp_solve to do this as well.}
+      \item{\code{negobjconst}}{Interpret the objective constant with an opposite sign. Some solvers interpret the objective constant as a value in the RHS and negate it when brought to the LHS. This option allows \code{lp_solve} to do this as well.}
     }
   }
 }

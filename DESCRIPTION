@@ -10,3 +10,4 @@ Description: The lpSolveAPI package provides an R interface to 'lp_solve',
     linear, (mixed) integer/binary, semi-continuous and special ordered sets
     (SOS) models.
 License: LGPL-2
+RoxygenNote: 7.2.0

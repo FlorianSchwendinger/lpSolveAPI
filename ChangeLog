@@ -1,3 +1,5 @@
+<2022-08-04 Do> 
+* Small changes in the docs.
 <2020-01-07 Di> 
 * Fixed some warnings showed with pedantic.
 * The package orphaned since ROI.plugin.lpsolve depends on lpSolveAPI I volunteered to take over the package.

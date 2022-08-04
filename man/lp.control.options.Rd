@@ -223,7 +223,7 @@ A description of the various control options that can be set in an lpSolve linea
 
     \item{timeout}{a positive integer value specifying the number of seconds after which a timeout will occur. If zero, then no timeout will occur.}
 
-    \item{verbose}{a character string controlling the severity of messages reported by lp_solve. The possible choices are given in the table below. All errors/warnings in lp_solve have a particular severiy: for example, specifying a wrong row or column index is considered a severe error. All messages equal to and below the set level are reported (in the console).
+    \item{verbose}{a character string controlling the severity of messages reported by \code{lp_solve}. The possible choices are given in the table below. All errors/warnings in \code{lp_solve} have a particular severiy: for example, specifying a wrong row or column index is considered a severe error. All messages equal to and below the set level are reported (in the console).
 
       \tabular{rl}{
         \code{"neutral"}: \tab No reporting. \cr
