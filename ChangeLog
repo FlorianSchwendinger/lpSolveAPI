@@ -1,5 +1,7 @@
 <2022-08-04 Do> 
 * Small changes in the docs.
+* Thanks to Kurt Hornik for providing a fix to the issue shown in the CRAN `clang-UBSAN` checks.
+  `lp_presolve.c:191:34: runtime error: applying non-zero offset 24 to null pointer`
 <2020-01-07 Di> 
 * Fixed some warnings showed with pedantic.
 * The package orphaned since ROI.plugin.lpsolve depends on lpSolveAPI I volunteered to take over the package.
