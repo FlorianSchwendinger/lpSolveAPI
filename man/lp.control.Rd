@@ -21,7 +21,7 @@ lp.control(lprec, ..., reset = FALSE)
 a list containing all of the control parameters as set internally in \code{lprec}.
 }
 
-\references{\url{http://lpsolve.sourceforge.net/5.5/index.htm}}
+\references{\url{https://lpsolve.sourceforge.net/5.5/index.htm}}
 
 \author{Kjell Konis \email{kjell.konis@me.com}}
 

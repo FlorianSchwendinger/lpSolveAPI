@@ -23,7 +23,7 @@ a list with components
   \item{objtill}{a numeric vector of length \code{n} (where \code{n} is the number of decision variables in \code{lprec}) containing the values of the upper limits of the objective function.}
 }
 
-\references{\url{http://lpsolve.sourceforge.net/5.5/index.htm}}
+\references{\url{https://lpsolve.sourceforge.net/5.5/index.htm}}
 
 \author{Kjell Konis \email{kjell.konis@me.com}}
 

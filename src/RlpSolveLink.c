@@ -2439,7 +2439,7 @@ SEXP RlpSolve_get_statustext(SEXP Slp, SEXP Sstatuscode)
 }
 
 
-SEXP RlpSolve_lp_solve_version()
+SEXP RlpSolve_lp_solve_version(void)
 {
   SEXP ret = R_NilValue, names = R_NilValue;
 

@@ -25,7 +25,7 @@ a list with components
   \item{dualstill}{a numeric vector of length \code{m+n} (where \code{m} is the number of constraints in \code{m} and \code{n} is the number of decision variables in \code{lprec}) containing the values of the upper limits on the dual variables.}
 }
 
-\references{\url{http://lpsolve.sourceforge.net/5.5/index.htm}}
+\references{\url{https://lpsolve.sourceforge.net/5.5/index.htm}}
 
 \author{Kjell Konis \email{kjell.konis@me.com}}
 

@@ -1,3 +1,7 @@
+<2023-09-03 Sa> 
+* Fix "The valgrind 'additional issue' checks are now being done with Fedora 38 
+and its valgrind 3.21.0.  This is flagging 'realloc with size 0' in packages" issue.
+* Thanks to Kurt Hornik for providing a fix to the issue shown in the CRAN `clang-UBSAN` checks.
 <2022-08-04 Do> 
 * Small changes in the docs.
 * Thanks to Kurt Hornik for providing a fix to the issue shown in the CRAN `clang-UBSAN` checks.

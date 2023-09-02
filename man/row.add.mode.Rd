@@ -26,7 +26,7 @@ There are several caveats associated with row entry mode. First, only use this f
   \code{"on"} if row entry mode is on in \code{lprec}; otherwise \code{"off"}. 
 }
 
-\references{\url{http://lpsolve.sourceforge.net/5.5/index.htm}}
+\references{\url{https://lpsolve.sourceforge.net/5.5/index.htm}}
 
 \author{Kjell Konis \email{kjell.konis@me.com}}
 

@@ -21,7 +21,7 @@ get.mat(lprec, i, j)
 a single numeric value.
 }
 
-\references{\url{http://lpsolve.sourceforge.net/5.5/index.htm}}
+\references{\url{https://lpsolve.sourceforge.net/5.5/index.htm}}
 
 \author{Kjell Konis \email{kjell.konis@me.com}}
 

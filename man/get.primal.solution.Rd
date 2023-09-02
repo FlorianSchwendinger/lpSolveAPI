@@ -20,7 +20,7 @@ get.primal.solution(lprec, orig = FALSE)
 a numeric vector containing the values of the primal variables. If an error occurs (for instance \code{lprec} has not been successfully solved) a \code{NULL} value is returned.
 }
 
-\references{\url{http://lpsolve.sourceforge.net/5.5/index.htm}}
+\references{\url{https://lpsolve.sourceforge.net/5.5/index.htm}}
 
 \author{Kjell Konis \email{kjell.konis@me.com}}
 

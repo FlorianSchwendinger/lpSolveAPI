@@ -23,7 +23,7 @@ This function is used as a finalizer for lpSolve linear program model objects.
 \code{lprec} is invisibly returned.
 }
 
-\references{\url{http://lpsolve.sourceforge.net/5.5/index.htm}}
+\references{\url{https://lpsolve.sourceforge.net/5.5/index.htm}}
 
 \author{Kjell Konis \email{kjell.konis@me.com}}
 

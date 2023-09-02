@@ -25,7 +25,7 @@ A binary decision variable is simply an integer decision with an upper bound of 
 a \code{NULL} value is invisibly returned.
 }
 
-\references{\url{http://lpsolve.sourceforge.net/5.5/index.htm}}
+\references{\url{https://lpsolve.sourceforge.net/5.5/index.htm}}
 
 \author{Kjell Konis \email{kjell.konis@me.com}}
 

@@ -19,7 +19,7 @@ get.variables(lprec)
 a numeric vector containing the values of the decision variables corresponding to the optimal solution.
 }
 
-\references{\url{http://lpsolve.sourceforge.net/5.5/index.htm}}
+\references{\url{https://lpsolve.sourceforge.net/5.5/index.htm}}
 
 \author{Kjell Konis \email{kjell.konis@me.com}}
 

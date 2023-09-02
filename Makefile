@@ -28,5 +28,11 @@ check_gcc_san: build
 check_debian_clang: build
 	R -e "rhub::check(dir(pattern = 'lpSolveAPI_.*.tar.gz'), platform = 'debian-clang-devel')"
 
+check_fedora_gcc: build
+	R -e "rhub::check(dir(pattern = 'lpSolveAPI_.*.tar.gz'), platform = 'fedora-gcc-devel')"
 
+check_fedora_clang: build
+	R -e "rhub::check(dir(pattern = 'lpSolveAPI_.*.tar.gz'), platform = 'fedora-clang-devel')"
 
+devcheck_win_release: build
+	R -e "devtools::check_win_release(email = 'FlorianSchwendinger@gmx.at')"

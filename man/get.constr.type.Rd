@@ -21,7 +21,7 @@ get.constr.type(lprec, constraints = 1:m, as.char = TRUE)
 either a character vector or an integer vector containing the types of the constraints specified in \code{constraints}. The possibilities are: \code{0 = "free"}, \code{1 = "<="}, \code{2 = ">="} and \code{3 = "="}.
 }
 
-\references{\url{http://lpsolve.sourceforge.net/5.5/index.htm}}
+\references{\url{https://lpsolve.sourceforge.net/5.5/index.htm}}
 
 \author{Kjell Konis \email{kjell.konis@me.com}}
 

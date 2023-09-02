@@ -21,7 +21,7 @@ get.branch.mode(lprec, columns = 1:n, as.char = TRUE)
 either a character vector or an integer vector containing the branch modes for the decision variables specified in \code{columns}. The possibilities are: \code{0 = "ceiling"}, \code{1 = "floor"} and \code{2 = "auto"}.
 }
 
-\references{\url{http://lpsolve.sourceforge.net/5.5/index.htm}}
+\references{\url{https://lpsolve.sourceforge.net/5.5/index.htm}}
 
 \author{Kjell Konis \email{kjell.konis@me.com}}
 

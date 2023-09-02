@@ -24,7 +24,7 @@ When the branch and bound algorithm is used (i.e., when there are integer, semi-
 a single integer value: the number of optimal solutions.
 }
 
-\references{\url{http://lpsolve.sourceforge.net/5.5/index.htm}}
+\references{\url{https://lpsolve.sourceforge.net/5.5/index.htm}}
 
 \author{Kjell Konis \email{kjell.konis@me.com}}
 

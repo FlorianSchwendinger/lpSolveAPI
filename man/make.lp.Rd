@@ -21,7 +21,7 @@ make.lp(nrow = 0, ncol = 0, verbose = "neutral")
 an lpSolve linear program model object. Specifically an R external pointer with class \code{lpExtPtr}.
 }
 
-\references{\url{http://lpsolve.sourceforge.net/5.5/index.htm}}
+\references{\url{https://lpsolve.sourceforge.net/5.5/index.htm}}
 
 \author{Kjell Konis \email{kjell.konis@me.com}}
 

@@ -27,7 +27,7 @@ a list with components
   \item{objtillvalue}{not used in this version of lpSolve.}
 }
 
-\references{\url{http://lpsolve.sourceforge.net/5.5/index.htm}}
+\references{\url{https://lpsolve.sourceforge.net/5.5/index.htm}}
 
 \author{Kjell Konis \email{kjell.konis@me.com}}
 

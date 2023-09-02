@@ -20,7 +20,7 @@ Display an lpSolve linear program model object in the console.
 \code{x} is invisibly returned.
 }
 
-\references{\url{http://lpsolve.sourceforge.net/5.5/index.htm}}
+\references{\url{https://lpsolve.sourceforge.net/5.5/index.htm}}
 
 \author{Kjell Konis \email{kjell.konis@me.com}}
 

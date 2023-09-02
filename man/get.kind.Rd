@@ -24,7 +24,7 @@ Decision variables have both a type and a kind. The type is either \code{real} o
 a character vector containing the kind of each decision variable specified in \code{columns}.
 }
 
-\references{\url{http://lpsolve.sourceforge.net/5.5/index.htm}}
+\references{\url{https://lpsolve.sourceforge.net/5.5/index.htm}}
 
 \author{Kjell Konis \email{kjell.konis@me.com}}
 

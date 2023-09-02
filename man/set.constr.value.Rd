@@ -22,7 +22,7 @@ set.constr.value(lprec, rhs = NULL, lhs = NULL, constraints = 1:m)
 a \code{NULL} value is invisibly returned.
 }
 
-\references{\url{http://lpsolve.sourceforge.net/5.5/index.htm}}
+\references{\url{https://lpsolve.sourceforge.net/5.5/index.htm}}
 
 \author{Kjell Konis \email{kjell.konis@me.com}}
 

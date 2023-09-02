@@ -20,7 +20,7 @@ set.branch.weights(lprec, weights)
 a \code{NULL} value is invisibly returned.
 }
 
-\references{\url{http://lpsolve.sourceforge.net/5.5/index.htm}}
+\references{\url{https://lpsolve.sourceforge.net/5.5/index.htm}}
 
 \author{Kjell Konis \email{kjell.konis@me.com}}
 

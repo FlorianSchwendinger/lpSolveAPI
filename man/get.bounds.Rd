@@ -20,7 +20,7 @@ get.bounds(lprec, columns = 1:n)
   a list with components \code{lower} and \code{upper}.
 }
 
-\references{\url{http://lpsolve.sourceforge.net/5.5/index.htm}}
+\references{\url{https://lpsolve.sourceforge.net/5.5/index.htm}}
 
 \author{Kjell Konis \email{kjell.konis@me.com}}
 

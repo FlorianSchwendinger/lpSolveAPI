@@ -20,7 +20,7 @@ get.basis(lprec, nonbasic = FALSE)
 an integer vector containing the indices of the basic (and nonbasic if requested) variables. If an error occurs (for instance when calling \code{get.basis} on a model that has not yet been solved) a \code{NULL} value is returned.
 }
 
-\references{\url{http://lpsolve.sourceforge.net/5.5/index.htm}}
+\references{\url{https://lpsolve.sourceforge.net/5.5/index.htm}}
 
 \author{Kjell Konis \email{kjell.konis@me.com}}
 

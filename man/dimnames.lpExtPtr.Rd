@@ -22,7 +22,7 @@ Retrieve or set the dimnames in an lpSolve linear program model object.
 a list of two character vectors containing the row names and the column names in the lpSolve linear program model object.
 }
 
-\references{\url{http://lpsolve.sourceforge.net/5.5/index.htm}}
+\references{\url{https://lpsolve.sourceforge.net/5.5/index.htm}}
 
 \author{Kjell Konis \email{kjell.konis@me.com}}
 

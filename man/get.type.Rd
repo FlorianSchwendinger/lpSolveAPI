@@ -25,7 +25,7 @@ The function \code{\link{set.type}} can be used to set a decision variable as bi
 either a character vector with elements from the set \code{\{"real", "integer"\}} indicating the type of each decision variable specified in \code{columns} or (if \code{as.char = FALSE}) a logical vector with \code{TRUE} elements corresponding to the integer decision variables specified in \code{columns}.
 }
 
-\references{\url{http://lpsolve.sourceforge.net/5.5/index.htm}}
+\references{\url{https://lpsolve.sourceforge.net/5.5/index.htm}}
 
 \author{Kjell Konis \email{kjell.konis@me.com}}
 

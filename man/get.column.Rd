@@ -20,7 +20,7 @@ get.column(lprec, column)
 a list with elements \code{column} and \code{nzrow} such that \code{column[i]} contains the constraint coefficient in row \code{nzrow[i]}. Rows not present in \code{nzrow} have coefficient zero in \code{column}.
 }
 
-\references{\url{http://lpsolve.sourceforge.net/5.5/index.htm}}
+\references{\url{https://lpsolve.sourceforge.net/5.5/index.htm}}
 
 \author{Kjell Konis \email{kjell.konis@me.com}}
 

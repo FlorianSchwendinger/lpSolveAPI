@@ -24,7 +24,7 @@ add.SOS(lprec, name, type, priority, columns, weights)
 If the operation was successful: a single integer value containing the list index of the new special ordered set. A return value of \code{0} indicates an error.
 }
 
-\references{\url{http://lpsolve.sourceforge.net/5.5/index.htm}}
+\references{\url{https://lpsolve.sourceforge.net/5.5/index.htm}}
 
 \author{Kjell Konis \email{kjell.konis@me.com}}
 

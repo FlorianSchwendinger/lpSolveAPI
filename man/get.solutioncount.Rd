@@ -19,7 +19,7 @@ get.solutioncount(lprec)
 a single integer value giving the number of solutions attaining the optimal objective value.
 }
 
-\references{\url{http://lpsolve.sourceforge.net/5.5/index.htm}}
+\references{\url{https://lpsolve.sourceforge.net/5.5/index.htm}}
 
 \author{Kjell Konis \email{kjell.konis@me.com}}
 

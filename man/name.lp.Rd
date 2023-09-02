@@ -24,7 +24,7 @@ If \code{name} is provided then this function sets the name of the lpSolve linea
 there is no return value if the \code{name} argument is given. Otherwise a character string containing the name of the lpSolve linear program model object.
 }
 
-\references{\url{http://lpsolve.sourceforge.net/5.5/index.htm}}
+\references{\url{https://lpsolve.sourceforge.net/5.5/index.htm}}
 
 \author{Kjell Konis \email{kjell.konis@me.com}}
 
