@@ -20,13 +20,13 @@ void RlpsHS(lprec *lp, unsigned char status)
   if(status)
     return;
 
-  error(get_statustext(lp, get_status(lp)));
+  error("%s", get_statustext(lp, get_status(lp)));
 }
 
 
 void __WINAPI RlpSolveLogFunction(lprec *lp, void *userhandle, char *buf)
 {
-  Rprintf(buf);  
+  Rprintf("%s", buf);
 }
 
 
