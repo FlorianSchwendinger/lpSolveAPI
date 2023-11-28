@@ -1,5 +1,5 @@
 Package: lpSolveAPI
-Version: 5.5.2.0-17.10
+Version: 5.5.2.0-17.11
 Title: R Interface to 'lp_solve' Version 5.5.2.0
 Author: lp_solve <https://lpsolve.sourceforge.net/> [aut],
         Kjell Konis [aut],
