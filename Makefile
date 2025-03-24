@@ -36,3 +36,7 @@ check_fedora_clang: build
 
 devcheck_win_release: build
 	R -e "devtools::check_win_release(email = 'FlorianSchwendinger@gmx.at')"
+
+devcheck_win_devel: build
+	R -e "devtools::check_win_devel(email = 'FlorianSchwendinger@gmx.at')"
+

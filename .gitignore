@@ -1,0 +1,35 @@
+# R package specific files
+.Rproj.user
+.Rhistory
+.RData
+.Ruserdata
+*.Rproj
+*.o
+*.so
+*.dll
+.Rcheck/
+*-Ex.R
+/*.tar.gz
+/*.Rcheck/
+vignettes/*.html
+vignettes/*.pdf
+
+# Mac OS specific files
+.DS_Store
+
+# Compilation artifacts
+src/*.o
+src/*.so
+src/*.dll
+
+# Build artifacts
+lpSolveAPI.Rcheck/
+lpSolveAPI_*.tar.gz
+
+# Temporary files
+*.log
+*.tmp
+
+# IDE specific files
+.idea/
+.vscode/

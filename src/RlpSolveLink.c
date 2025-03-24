@@ -174,22 +174,24 @@ SEXP RlpSolve_set_columnex(SEXP Slp, SEXP Scol_no, SEXP Scolumn, SEXP Srowno)
 
 /*get_column*/
 
-
-SEXP RlpSolve_get_columnex(SEXP Slp, SEXP Scol_nr)
-{
-  SEXP ret = R_NilValue, Scolumn = R_NilValue, Snzrow = R_NilValue,
-       names = R_NilValue;
+SEXP RlpSolve_get_columnex(SEXP Slp, SEXP Scol_nr) {
+  SEXP ret = R_NilValue, Scolumn0 = R_NilValue, Snzrow0 = R_NilValue,
+       Scolumn = R_NilValue, Snzrow = R_NilValue, names = R_NilValue;
   lprec* lp = lprecPointerFromSEXP(Slp);
   int nrow = -1;
 
-  PROTECT(Scolumn = allocVector(REALSXP, 1 + get_Nrows(lp)));
-  PROTECT(Snzrow = allocVector(INTSXP, 1 + get_Nrows(lp)));
+  PROTECT(Scolumn0 = allocVector(REALSXP, 1 + get_Nrows(lp)));
+  PROTECT(Snzrow0 = allocVector(INTSXP, 1 + get_Nrows(lp)));
 
-  nrow = get_columnex(lp, INTEGER(Scol_nr)[0], REAL(Scolumn), INTEGER(Snzrow));
+  nrow = get_columnex(lp, INTEGER(Scol_nr)[0], REAL(Scolumn0), INTEGER(Snzrow0));
 
-  if(nrow >= 0) {
-    SETLENGTH(Scolumn, nrow);
-    SETLENGTH(Snzrow, nrow);
+  if (nrow >= 0) {
+    PROTECT(Scolumn = allocVector(REALSXP, nrow));
+    PROTECT(Snzrow = allocVector(INTSXP, nrow));
+    for (int i=0; i < nrow; i++) {
+      REAL(Scolumn)[i] = REAL(Scolumn0)[i];
+      INTEGER(Snzrow)[i] = INTEGER(Snzrow0)[i];
+    }
     PROTECT(ret = allocVector(VECSXP, 2));
     SET_VECTOR_ELT(ret, 0, Scolumn);
     SET_VECTOR_ELT(ret, 1, Snzrow);
@@ -197,7 +199,7 @@ SEXP RlpSolve_get_columnex(SEXP Slp, SEXP Scol_nr)
     SET_STRING_ELT(names, 0, mkChar("column"));
     SET_STRING_ELT(names, 1, mkChar("nzrow"));
     setAttrib(ret, R_NamesSymbol, names);
-    UNPROTECT(2);
+    UNPROTECT(4);
   }
 
   UNPROTECT(2);
@@ -326,18 +328,22 @@ SEXP RlpSolve_del_constraint(SEXP Slp, SEXP Sdel_rows)
 
 SEXP RlpSolve_get_rowex(SEXP Slp, SEXP Srow_nr)
 {
-  SEXP ret = R_NilValue, Srow = R_NilValue, Scolno = R_NilValue,
-       names = R_NilValue;
+  SEXP ret = R_NilValue, Srow0 = R_NilValue, Scolno0 = R_NilValue,
+       Srow = R_NilValue, Scolno = R_NilValue, names = R_NilValue;
   int ncol = -1;
   lprec* lp = lprecPointerFromSEXP(Slp);
-  PROTECT(Srow = allocVector(REALSXP, get_Ncolumns(lp)));
-  PROTECT(Scolno = allocVector(INTSXP, get_Ncolumns(lp)));
+  PROTECT(Srow0 = allocVector(REALSXP, get_Ncolumns(lp)));
+  PROTECT(Scolno0 = allocVector(INTSXP, get_Ncolumns(lp)));
 
-  ncol = get_rowex(lp, INTEGER(Srow_nr)[0], REAL(Srow), INTEGER(Scolno));
+  ncol = get_rowex(lp, INTEGER(Srow_nr)[0], REAL(Srow0), INTEGER(Scolno0));
 
   if(ncol >= 0) {
-    SETLENGTH(Srow, ncol);
-    SETLENGTH(Scolno, ncol);
+    PROTECT(Srow = allocVector(REALSXP, ncol));
+    PROTECT(Scolno = allocVector(INTSXP, ncol));
+    for (int i=0; i < ncol; i++) {
+      REAL(Srow)[i] = REAL(Srow0)[i];
+      INTEGER(Scolno)[i] = INTEGER(Scolno0)[i];
+    }
     PROTECT(ret = allocVector(VECSXP, 2));
     SET_VECTOR_ELT(ret, 0, Srow);
     SET_VECTOR_ELT(ret, 1, Scolno);
@@ -345,7 +351,7 @@ SEXP RlpSolve_get_rowex(SEXP Slp, SEXP Srow_nr)
     SET_STRING_ELT(names, 0, mkChar("row"));
     SET_STRING_ELT(names, 1, mkChar("colno"));
     setAttrib(ret, R_NamesSymbol, names);
-    UNPROTECT(2);
+    UNPROTECT(4);
   }
 
   UNPROTECT(2);
