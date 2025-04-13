@@ -20,6 +20,8 @@
 #include <stdarg.h>
 #include <string.h>
 
+#include <R.h>
+
 #include "lp_lib.h"
 #include "lp_scale.h"
 #include "commonlib.h"
@@ -59,7 +61,7 @@ void __VACALL report(lprec *lp, int level, char *format, ...)
 
   if(lp == NULL) {
     va_start(ap, format);
-    vfprintf(stderr, format, ap);
+    Rprintf(format, ap);
     va_end(ap);
   }
   else if(level <= lp->verbose) {
@@ -73,8 +75,8 @@ void __VACALL report(lprec *lp, int level, char *format, ...)
       va_start(ap, format);
       vfprintf(lp->outstream, format, ap);
       va_end(ap);
-      if(lp->outstream != stdout)
-        fflush(lp->outstream);
+      // if(lp->outstream != stdout)
+      fflush(lp->outstream);
     }
   }
 #ifdef xParanoia
@@ -105,9 +107,9 @@ STATIC void debug_print(lprec *lp, char *format, ...)
     if (lp == NULL)
     {
       va_start(ap, format);
-      vfprintf(stderr, format, ap);
+      Rprintf(format, ap);
       va_end(ap);
-      fputc('\n', stderr);
+      Rprintf("\n");
     }
     else if(lp->debuginfo != NULL)
     {
@@ -295,7 +297,8 @@ void blockWriteBMAT(FILE *output, const char *label, lprec* lp, int first, int l
    principally for run difference and debugging purposes */
 MYBOOL REPORT_debugdump(lprec *lp, char *filename, MYBOOL livedata)
 {
-  FILE   *output = stdout;
+  /* FILE   *output = stdout; */
+  FILE   *output;
   MYBOOL ok;
 
   ok = (MYBOOL) ((filename == NULL) || ((output = fopen(filename,"w")) != NULL));
@@ -702,7 +705,7 @@ MYBOOL REPORT_mat_mmsave(lprec *lp, char *filename, int *colndx, MYBOOL includeO
   int         n, m, nz, i, j, k, kk;
   MATrec      *mat = lp->matA;
   MM_typecode matcode;
-  FILE        *output = stdout;
+  FILE        *output; /* = stdout; */
   MYBOOL      ok;
   LPSREAL        *acol = NULL;
   int         *nzlist = NULL;

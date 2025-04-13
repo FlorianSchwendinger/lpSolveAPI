@@ -52,6 +52,7 @@
 #ifdef MATLAB
   #include "mex.h"
 #endif
+#include "R.h"
 
 #ifdef FORTIFY
 # include "lp_fortify.h"
@@ -639,7 +640,7 @@ void LUSOL_report(LUSOLrec *LUSOL, int msglevel, char *format, ...)
 
   if(LUSOL == NULL) {
     va_start(ap, format);
-    vfprintf(stderr, format, ap);
+    Rprintf(format, ap);
     va_end(ap);
   }
   else if(msglevel >= 0  /*LUSOL->luparm[2]*/) {
@@ -647,7 +648,7 @@ void LUSOL_report(LUSOLrec *LUSOL, int msglevel, char *format, ...)
       char buff[255];
 
       va_start(ap, format);
-      vsprintf(buff, format, ap);
+      vsnprintf(buff, sizeof(buff), format, ap);
       va_end(ap);
       LUSOL->writelog(LUSOL, LUSOL->loghandle, buff);
     }

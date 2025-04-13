@@ -6,7 +6,7 @@
 *   (Version 1.01, 5/2003)
 */
 
-
+#include <R.h>
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
@@ -32,8 +32,8 @@ int mm_read_unsymmetric_sparse(const char *fname, int *M_, int *N_, int *nz_,
 
     if (mm_read_banner(f, &matcode) != 0)
     {
-        printf("mm_read_unsymetric: Could not process Matrix Market banner ");
-        printf(" in file [%s]\n", fname);
+        Rprintf("mm_read_unsymetric: Could not process Matrix Market banner ");
+        Rprintf(" in file [%s]\n", fname);
         return -1;
     }
 
@@ -42,8 +42,8 @@ int mm_read_unsymmetric_sparse(const char *fname, int *M_, int *N_, int *nz_,
     if ( !(mm_is_real(matcode) && mm_is_matrix(matcode) &&
             mm_is_sparse(matcode)))
     {
-        fprintf(stderr, "Sorry, this application does not support ");
-        fprintf(stderr, "Market Market type: [%s]\n",
+        Rprintf("Sorry, this application does not support ");
+        Rprintf("Market Market type: [%s]\n",
                 mm_typecode_to_str(matcode));
         return -1;
     }
@@ -52,7 +52,7 @@ int mm_read_unsymmetric_sparse(const char *fname, int *M_, int *N_, int *nz_,
 
     if (mm_read_mtx_crd_size(f, &M, &N, &nz) !=0)
     {
-        fprintf(stderr, "read_unsymmetric_sparse(): could not parse matrix size.\n");
+        Rprintf("read_unsymmetric_sparse(): could not parse matrix size.\n");
         return -1;
     }
 
@@ -400,43 +400,44 @@ int mm_write_banner(FILE *f, MM_typecode matcode)
 int mm_write_mtx_crd(char fname[], int M, int N, int nz, int I[], int J[],
         double val[], MM_typecode matcode)
 {
-    FILE *f;
-    int i;
-
-    if (strcmp(fname, "stdout") == 0)
-        f = stdout;
-    else
-    if ((f = fopen(fname, "w")) == NULL)
-        return MM_COULD_NOT_WRITE_FILE;
-
-    /* print banner followed by typecode */
-    fprintf(f, "%s ", MatrixMarketBanner);
-    fprintf(f, "%s\n", mm_typecode_to_str(matcode));
-
-    /* print matrix sizes and nonzeros */
-    fprintf(f, "%d %d %d\n", M, N, nz);
-
-    /* print values */
-    if (mm_is_pattern(matcode))
-        for (i=0; i<nz; i++)
-            fprintf(f, "%d %d\n", I[i], J[i]);
-    else
-    if (mm_is_real(matcode))
-        for (i=0; i<nz; i++)
-            fprintf(f, "%d %d %20.16g\n", I[i], J[i], val[i]);
-    else
-    if (mm_is_complex(matcode))
-        for (i=0; i<nz; i++)
-            fprintf(f, "%d %d %20.16g %20.16g\n", I[i], J[i], val[2*i],
-                        val[2*i+1]);
-    else
-    {
-        if (f != stdout) fclose(f);
-        return MM_UNSUPPORTED_TYPE;
-    }
-
-    if (f !=stdout) fclose(f);
-
+/*
+**  FILE *f;
+**  int i;
+**
+**  if (strcmp(fname, "stdout") == 0) 
+**      f = stdout;
+**  else
+**  if ((f = fopen(fname, "w")) == NULL)
+**      return MM_COULD_NOT_WRITE_FILE;
+**  
+**  ** print banner followed by typecode **
+**  fprintf(f, "%s ", MatrixMarketBanner);
+**  fprintf(f, "%s\n", mm_typecode_to_str(matcode));
+**
+**  ** print matrix sizes and nonzeros **
+**  fprintf(f, "%d %d %d\n", M, N, nz);
+**
+**  ** print values **
+**  if (mm_is_pattern(matcode))
+**      for (i=0; i<nz; i++)
+**          fprintf(f, "%d %d\n", I[i], J[i]);
+**  else
+**  if (mm_is_real(matcode))
+**      for (i=0; i<nz; i++)
+**          fprintf(f, "%d %d %20.16g\n", I[i], J[i], val[i]);
+**  else
+**  if (mm_is_complex(matcode))
+**      for (i=0; i<nz; i++)
+**          fprintf(f, "%d %d %20.16g %20.16g\n", I[i], J[i], val[2*i], 
+**                      val[2*i+1]);
+**  else
+**  {
+**      if (f != stdout) fclose(f);
+**      return MM_UNSUPPORTED_TYPE;
+**  }
+**
+**  if (f !=stdout) fclose(f);
+*/
     return 0;
 }
 
@@ -492,7 +493,7 @@ char  *mm_typecode_to_str(MM_typecode matcode)
     else
         return NULL;
 
-    sprintf(buffer,"%s %s %s %s", types[0], types[1], types[2], types[3]);
+    snprintf(buffer, sizeof(buffer), "%s %s %s %s", types[0], types[1], types[2], types[3]);
     return & buffer[0];
 
 }

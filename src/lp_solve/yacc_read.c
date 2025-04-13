@@ -172,13 +172,13 @@ static void add_int_var(parse_parm *pp, char *name, short int_decl)
   if((hp = findhash(name, pp->Hash_tab)) == NULL) {
     char buf[256];
 
-    sprintf(buf, "Unknown variable %s declared integer, ignored", name);
+    snprintf(buf, sizeof(buf), "Unknown variable %s declared integer, ignored", name);
     error(pp, NORMAL, buf);
   }
   else if(pp->coldata[hp->index].must_be_int) {
     char buf[256];
 
-    sprintf(buf, "Variable %s declared integer more than once, ignored", name);
+    snprintf(buf, sizeof(buf), "Variable %s declared integer more than once, ignored", name);
     error(pp, NORMAL, buf);
   }
   else {
@@ -187,14 +187,14 @@ static void add_int_var(parse_parm *pp, char *name, short int_decl)
       if(pp->coldata[hp->index].lowbo != -DEF_INFINITE * (LPSREAL) 10.0) {
         char buf[256];
 
-        sprintf(buf, "Variable %s: lower bound on variable redefined", name);
+        snprintf(buf, sizeof(buf), "Variable %s: lower bound on variable redefined", name);
         error(pp, NORMAL, buf);
       }
       pp->coldata[hp->index].lowbo = 0;
       if(pp->coldata[hp->index].upbo < DEF_INFINITE) {
         char buf[256];
 
-        sprintf(buf, "Variable %s: upper bound on variable redefined", name);
+        snprintf(buf, sizeof(buf), "Variable %s: upper bound on variable redefined", name);
         error(pp, NORMAL, buf);
       }
       pp->coldata[hp->index].upbo = 1;
@@ -213,13 +213,13 @@ static void add_sec_var(parse_parm *pp, char *name)
   if((hp = findhash(name, pp->Hash_tab)) == NULL) {
     char buf[256];
 
-    sprintf(buf, "Unknown variable %s declared semi-continuous, ignored", name);
+    snprintf(buf, sizeof(buf), "Unknown variable %s declared semi-continuous, ignored", name);
     error(pp, NORMAL, buf);
   }
   else if(pp->coldata[hp->index].must_be_sec) {
     char buf[256];
 
-    sprintf(buf, "Variable %s declared semi-continuous more than once, ignored", name);
+    snprintf(buf, sizeof(buf), "Variable %s declared semi-continuous more than once, ignored", name);
     error(pp, NORMAL, buf);
   }
   else
@@ -233,7 +233,7 @@ int set_sec_threshold(parse_parm *pp, char *name, LPSREAL threshold)
   if((hp = findhash(name, pp->Hash_tab)) == NULL) {
     char buf[256];
 
-    sprintf(buf, "Unknown variable %s declared semi-continuous, ignored", name);
+    snprintf(buf, sizeof(buf), "Unknown variable %s declared semi-continuous, ignored", name);
     error(pp, NORMAL, buf);
     return(FALSE);
   }
@@ -242,7 +242,7 @@ int set_sec_threshold(parse_parm *pp, char *name, LPSREAL threshold)
     char buf[256];
 
     pp->coldata[hp->index].must_be_sec = FALSE;
-    sprintf(buf, "Variable %s declared semi-continuous, but it has a non-negative lower bound (%f), ignored", name, pp->coldata[hp->index].lowbo);
+    snprintf(buf, sizeof(buf), "Variable %s declared semi-continuous, but it has a non-negative lower bound (%f), ignored", name, pp->coldata[hp->index].lowbo);
     error(pp, NORMAL, buf);
   }
   if (threshold > pp->coldata[hp->index].lowbo)
@@ -258,13 +258,13 @@ static void add_free_var(parse_parm *pp, char *name)
   if((hp = findhash(name, pp->Hash_tab)) == NULL) {
     char buf[256];
 
-    sprintf(buf, "Unknown variable %s declared free, ignored", name);
+    snprintf(buf, sizeof(buf), "Unknown variable %s declared free, ignored", name);
     error(pp, NORMAL, buf);
   }
   else if(pp->coldata[hp->index].must_be_free) {
     char buf[256];
 
-    sprintf(buf, "Variable %s declared free more than once, ignored", name);
+    snprintf(buf, sizeof(buf), "Variable %s declared free more than once, ignored", name);
     error(pp, NORMAL, buf);
   }
   else
@@ -446,7 +446,7 @@ static int store(parse_parm *pp, char *variable,
   if(value == 0) {
     char buf[256];
 
-    sprintf(buf, "(store) Warning, variable %s has an effective coefficient of 0, Ignored", variable);
+    snprintf(buf, sizeof(buf), "(store) Warning, variable %s has an effective coefficient of 0, Ignored", variable);
     error(pp, NORMAL, buf);
     /* return(TRUE); */
   }
@@ -514,7 +514,7 @@ static int storefirst(parse_parm *pp)
       else {
         char buf[256];
 
-        sprintf(buf, "Warning, variable %s has an effective coefficient of 0, ignored", pp->tmp_store.name);
+        snprintf(buf, sizeof(buf), "Warning, variable %s has an effective coefficient of 0, ignored", pp->tmp_store.name);
         error(pp, NORMAL, buf);
       }
     }
@@ -556,7 +556,7 @@ int store_re_op(parse_parm *pp, char OP, int HadConstraint, int HadVar, int Had_
     {
       char buf[256];
 
-      sprintf(buf, "Error: unknown relational operator %c", OP);
+      snprintf(buf, sizeof(buf), "Error: unknown relational operator %c", OP);
       error(pp, CRITICAL, buf);
     }
     return(FALSE);
@@ -768,13 +768,13 @@ int store_bounds(parse_parm *pp, int warn)
     if((pp->tmp_store.rhs_value == 0) ||
        ((pp->tmp_store.rhs_value > 0) && (pp->tmp_store.relat == LE)) ||
        ((pp->tmp_store.rhs_value < 0) && (pp->tmp_store.relat == GE))) {
-      sprintf(buf, "Variable %s has an effective coefficient of 0 in bound, ignored",
+      snprintf(buf, sizeof(buf), "Variable %s has an effective coefficient of 0 in bound, ignored",
               pp->tmp_store.name);
       if(warn)
         error(pp, NORMAL, buf);
     }
     else {
-      sprintf(buf, "Error, variable %s has an effective coefficient of 0 in bound",
+      snprintf(buf, sizeof(buf), "Error, variable %s has an effective coefficient of 0 in bound",
               pp->tmp_store.name);
       error(pp, CRITICAL, buf);
       return(FALSE);
@@ -1140,69 +1140,69 @@ static int readinput(parse_parm *pp, lprec *lp)
   if(pp->Verbose) {
     int j;
 
-    printf("\n");
-    printf("**********Data read**********\n");
-    printf("Rows    : %d\n", pp->Rows);
-    printf("Columns : %d\n", pp->Columns);
-    printf("Nonnuls : %d\n", pp->Non_zeros);
-    printf("NAME          LPPROB\n");
-    printf("ROWS\n");
+    Rprintf("\n");
+    Rprintf("**********Data read**********\n");
+    Rprintf("Rows    : %d\n", pp->Rows);
+    Rprintf("Columns : %d\n", pp->Columns);
+    Rprintf("Nonnuls : %d\n", pp->Non_zeros);
+    Rprintf("NAME          LPPROB\n");
+    Rprintf("ROWS\n");
     for(i = 0; i <= pp->Rows; i++) {
       if(pp->relat[i] == LE)
-        printf(" L  ");
+        Rprintf(" L  ");
       else if(pp->relat[i] == EQ)
-        printf(" E  ");
+        Rprintf(" E  ");
       else if(pp->relat[i] == GE)
-        printf(" G  ");
+        Rprintf(" G  ");
       else if(pp->relat[i] == OF)
-        printf(" N  ");
-      printf("%s\n", get_row_name(lp, i));
+        Rprintf(" N  ");
+      Rprintf("%s\n", get_row_name(lp, i));
     }
 
-    printf("COLUMNS\n");
+    Rprintf("COLUMNS\n");
     j = 0;
     for(i = 0; i < pp->Non_zeros; i++) {
       if(i == lp->col_end[j])
         j++;
-      printf("    %-8s  %-8s  %g\n", get_col_name(lp, j),
+      Rprintf("    %-8s  %-8s  %g\n", get_col_name(lp, j),
              get_row_name(lp, lp->mat[i].row_nr), (double)lp->mat[i].value);
     }
 
-    printf("RHS\n");
+    Rprintf("RHS\n");
     for(i = 0; i <= pp->Rows; i++) {
-      printf("    RHS       %-8s  %g\n", get_row_name(lp, i),
+      Rprintf("    RHS       %-8s  %g\n", get_row_name(lp, i),
              (double)lp->orig_rhs[i]);
     }
 
-    printf("RANGES\n");
+    Rprintf("RANGES\n");
     for(i = 1; i <= pp->Rows; i++)
       if((lp->orig_upbo[i] != lp->infinite) && (lp->orig_upbo[i] != 0)) {
-        printf("    RGS       %-8s  %g\n", get_row_name(lp, i),
+        Rprintf("    RGS       %-8s  %g\n", get_row_name(lp, i),
                (double)lp->orig_upbo[i]);
       }
       else if((lp->orig_lowbo[i] != 0)) {
-        printf("    RGS       %-8s  %g\n", get_row_name(lp, i),
+        Rprintf("    RGS       %-8s  %g\n", get_row_name(lp, i),
                (double)-lp->orig_lowbo[i]);
       }
 
-    printf("BOUNDS\n");
+    Rprintf("BOUNDS\n");
     for(i = pp->Rows + 1; i <= pp->Rows + pp->Columns; i++) {
       if((lp->orig_lowbo[i] != 0) && (lp->orig_upbo[i] < lp->infinite) &&
          (lp->orig_lowbo[i] == lp->orig_upbo[i])) {
-        printf(" FX BND       %-8s  %g\n", get_col_name(lp, i - pp->Rows),
+        Rprintf(" FX BND       %-8s  %g\n", get_col_name(lp, i - pp->Rows),
                (double)lp->orig_upbo[i]);
       }
       else {
         if(lp->orig_upbo[i] < lp->infinite)
-            printf(" UP BND       %-8s  %g\n", get_col_name(lp, i - pp->Rows),
+            Rprintf(" UP BND       %-8s  %g\n", get_col_name(lp, i - pp->Rows),
                    (double)lp->orig_upbo[i]);
         if(lp->orig_lowbo[i] > 0)
-            printf(" LO BND       %-8s  %g\n", get_col_name(lp, i - pp->Rows),
+            Rprintf(" LO BND       %-8s  %g\n", get_col_name(lp, i - pp->Rows),
                    (double)lp->orig_lowbo[i]);
       }
     }
 
-    printf("ENDATA\n");
+    Rprintf("ENDATA\n");
   }
 #endif
 

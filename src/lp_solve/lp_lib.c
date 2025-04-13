@@ -25,6 +25,7 @@
 #include <string.h>
 #include <float.h>
 #include <math.h>
+#include <R.h>
 
 #if LoadInverseLib == TRUE
   #ifdef WIN32
@@ -165,23 +166,24 @@ STATIC int yieldformessages(lprec *lp)
 
 void __WINAPI set_outputstream(lprec *lp, FILE *stream)
 {
-  if((lp->outstream != NULL) && (lp->outstream != stdout)) {
+  if((lp->outstream != NULL)) { /* && (lp->outstream != stdout)) { */
     if(lp->streamowned)
       fclose(lp->outstream);
     else
       fflush(lp->outstream);
   }
-  if(stream == NULL)
-    lp->outstream = stdout;
-  else
+  // if(stream == NULL) {
+  //   error("Output stream cannot be NULL");
+  // } else {
     lp->outstream = stream;
+  // }
   lp->streamowned = FALSE;
 }
 
 MYBOOL __WINAPI set_outputfile(lprec *lp, char *filename)
 {
   MYBOOL ok;
-  FILE   *output = stdout;
+  FILE   *output; /* = stdout; */
 
   ok = (MYBOOL) ((filename == NULL) || (*filename == 0) || ((output = fopen(filename,"w")) != NULL));
   if(ok) {
@@ -5583,7 +5585,7 @@ lprec * __WINAPI read_XLI(char *xliname, char *modelname, char *dataname, char *
     lp->verbose = verbose;
     if(!set_XLI(lp, xliname)) {
       free_lp(&lp);
-      printf("read_XLI: No valid XLI package selected or available.\n");
+      Rprintf("read_XLI: No valid XLI package selected or available.\n");
     }
     else {
       if(!lp->xli_readmodel(lp, modelname, (dataname != NULL) && (*dataname != 0) ? dataname : NULL, options, verbose))
@@ -6116,6 +6118,7 @@ char * __WINAPI get_row_name(lprec *lp, int rownr)
 char * __WINAPI get_origrow_name(lprec *lp, int rownr)
 {
   MYBOOL newrow;
+  static char name[50];
   char   *ptr;
 
   newrow = (MYBOOL) (rownr < 0);
@@ -6143,9 +6146,10 @@ char * __WINAPI get_origrow_name(lprec *lp, int rownr)
         return(NULL);
     ptr = lp->rowcol_name;
     if(newrow)
-      sprintf(ptr, ROWNAMEMASK2, rownr);
+      snprintf(name, sizeof(name), ROWNAMEMASK2, rownr);
     else
-      sprintf(ptr, ROWNAMEMASK, rownr);
+      snprintf(name, sizeof(name), ROWNAMEMASK, rownr);
+    ptr = name;
   }
   return(ptr);
 }
@@ -6186,6 +6190,7 @@ char * __WINAPI get_origcol_name(lprec *lp, int colnr)
 {
   MYBOOL newcol;
   char   *ptr;
+  static char name[50];
 
   newcol = (MYBOOL) (colnr < 0);
   colnr = abs(colnr);
@@ -6211,9 +6216,10 @@ char * __WINAPI get_origcol_name(lprec *lp, int colnr)
         return(NULL);
     ptr = lp->rowcol_name;
     if(newcol)
-      sprintf(ptr, COLNAMEMASK2, colnr);
+      snprintf((char *) name, sizeof(name), COLNAMEMASK2, colnr);
     else
-      sprintf(ptr, COLNAMEMASK, colnr);
+      snprintf((char *) name, sizeof(name), COLNAMEMASK, colnr);
+    ptr = name;
   }
   return(ptr);
 }
@@ -9728,7 +9734,7 @@ STATIC int prepare_GUB(lprec *lp)
 
     /* Add the GUB */
     j = GUB_count(lp) + 1;
-    sprintf(GUBname, "GUB_%d", i);
+    snprintf(GUBname, sizeof(GUBname), "GUB_%d", i);
     add_GUB(lp, GUBname, j, k, members);
 
     /* Unmark the GUBs */
@@ -9941,7 +9947,7 @@ int preprocess(lprec *lp)
         if(lp->names_used && (lp->col_name[j] == NULL)) {
           char fieldn[50];
 
-          sprintf(fieldn, "__AntiBodyOf(%d)__", j);
+          snprintf(fieldn, sizeof(fieldn), "__AntiBodyOf(%d)__", j);
           if(!set_col_name(lp, lp->columns, fieldn)) {
 /*          if (!set_col_name(lp, lp->columns, get_col_name(lp, j))) { */
             ok = FALSE;

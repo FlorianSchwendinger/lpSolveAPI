@@ -606,10 +606,16 @@ STATIC LPSREAL rand_uniform(lprec *lp, LPSREAL range)
   static MYBOOL randomized = FALSE; /* static ok here for reentrancy/multithreading */
 
   if(!randomized) {
+    GetRNGstate();
+/* Original code:   srand((unsigned) time( NULL )); */
     randomized = TRUE;
-    srand((unsigned) time( NULL ));
   }
-  range *= (LPSREAL) rand() / (LPSREAL) RAND_MAX;
+/* We need to call Put when we're done. So...every time? */
+
+  range *= (LPSREAL) unif_rand();
+  PutRNGstate();
+
+/* Original code: range *= (LPSREAL) rand() / (LPSREAL) RAND_MAX; */
   return( range );
 }
 

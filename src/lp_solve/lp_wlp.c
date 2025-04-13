@@ -60,7 +60,7 @@ STATIC int write_lprow(lprec *lp, int rowno, void *userhandle, write_modeldata_f
         nchars += write_data(userhandle, write_modeldata, " ");
       else
         first = FALSE;
-      sprintf(buf, "%+.12g", (double)a);
+      snprintf(buf, sizeof(buf), "%+.12g", (double)a);
       if(strcmp(buf, "-1") == 0)
         nchars += write_data(userhandle, write_modeldata, "-");
       else if(strcmp(buf, "+1") == 0)

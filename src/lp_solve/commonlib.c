@@ -1,4 +1,4 @@
-
+#include <R.h>
 #include <sys/types.h>
 
 #if defined INTEGERTIME || defined CLOCKTIME || defined PosixTime
@@ -920,11 +920,11 @@ void printvec( int n, LPSREAL *x, int modulo )
   if (modulo <= 0) modulo = 5;
   for (i = 1; i<=n; i++) {
     if(mod(i, modulo) == 1)
-      printf("\n%2d:%12g", i, x[i]);
+      Rprintf("\n%2d:%12g", i, x[i]);
     else
-      printf(" %2d:%12g", i, x[i]);
+      Rprintf(" %2d:%12g", i, x[i]);
   }
-  if(i % modulo != 0) printf("\n");
+  if(i % modulo != 0) Rprintf("\n");
 }
 
 

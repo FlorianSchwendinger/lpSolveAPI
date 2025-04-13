@@ -1,3 +1,4 @@
+#include <R.h>
 
 /* ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
    File  lusol6a
@@ -583,8 +584,8 @@ void LU6LT(LUSOLrec *LUSOL, int *INFORM, LPSREAL V[], int NZidx[])
 #else
         TEMP = V[LUSOL->indr[L1]] + SUM;
         SUM += LUSOL->a[L]*V[J];
-        printf("V[%3d] = V[%3d] + L[%d,%d]*V[%3d]\n", LUSOL->indr[L1], LUSOL->indr[L1], J,LUSOL->indr[L1], J);
-        printf("%6g = %6g + %6g*%6g\n", V[LUSOL->indr[L1]] + SUM, TEMP, LUSOL->a[L], V[J]);
+        Rprintf("V[%3d] = V[%3d] + L[%d,%d]*V[%3d]\n", LUSOL->indr[L1], LUSOL->indr[L1], J,LUSOL->indr[L1], J);
+        Rprintf("%6g = %6g + %6g*%6g\n", V[LUSOL->indr[L1]] + SUM, TEMP, LUSOL->a[L], V[J]);
 #endif
       }
 #endif
@@ -619,8 +620,8 @@ void print_L0(LUSOLrec *LUSOL)
 
   for(I = 1; I <= LUSOL->n; I++) {
     for(J = 1; J <= LUSOL->m; J++)
-      fprintf(stdout, "%10g", denseL0[(LUSOL->n+1)*(J-1) + I]);
-    fprintf(stdout, "\n");
+      Rprintf("%10g", denseL0[(LUSOL->n+1)*(J-1) + I]);
+    Rprintf("\n");
   }
   LUSOL_FREE(denseL0);
 }

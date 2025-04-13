@@ -1,3 +1,4 @@
+#include <R.h>
 
 /* Create a column-based version of U.
    This makes it possible to solve Ux=h (ftran) faster for sparse h,
@@ -156,8 +157,8 @@ void LU6U0_v(LUSOLrec *LUSOL, LUSOLmat *mat, LPSREAL V[], LPSREAL W[], int NZidx
 #else
       TEMP = V[J];
       V[J] += T * mat->a[L];
-      printf("V[%3d] = V[%3d] + L[%d,%d]*V[%3d]\n", J, J, I,J, I);
-      printf("%6g = %6g + %6g*%6g\n", V[J], TEMP, mat->a[L], T);
+      Rprintf("V[%3d] = V[%3d] + L[%d,%d]*V[%3d]\n", J, J, I,J, I);
+      Rprintf("%6g = %6g + %6g*%6g\n", V[J], TEMP, mat->a[L], T);
 #endif
     }
 #endif

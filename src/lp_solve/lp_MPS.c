@@ -1,4 +1,3 @@
-
 #include <string.h>
 #include <stdarg.h>
 #include <ctype.h>
@@ -826,6 +825,7 @@ MYBOOL __WINAPI MPS_readex(lprec **newlp, void *userhandle, read_modeldata_func 
         /* field2: uninteresting name; field3: constraint name */
         /* field4: value */
         /* optional: field5: constraint name; field6: value */
+
         case MPSRHS:
 
           report(lp, FULL, "RHS line: %s %s %g %s %g\n",
@@ -971,7 +971,7 @@ MYBOOL __WINAPI MPS_readex(lprec **newlp, void *userhandle, read_modeldata_func 
                             field2, field3, field4, field5, field6);
 
           if((items != 4) && (items != 6)) {
-            report(lp, CRITICAL, "Wrong number of items (%d) in RANGES section line %d",
+            report(lp, CRITICAL, "Wrong number of items (%d) in RANGES section line %d\n",
                                   items, Lineno);
             break;
           }
@@ -1093,7 +1093,7 @@ MYBOOL __WINAPI MPS_readex(lprec **newlp, void *userhandle, read_modeldata_func 
             /* lp_solve needs a name for the SOS */
             if(variant == 0) {
               if(strlen(field3) == 0)  /* CPLEX format does not provide a SOS name; create one */
-                sprintf(field3, "SOS_%d", SOS_count(lp) + 1);
+                snprintf(field3, sizeof(field3), "SOS_%d", SOS_count(lp) + 1);
             }
             else {                     /* Remap XPRESS format name */
               strcpy(field3, field1);
@@ -1177,7 +1177,7 @@ static void number(char *str,LPSREAL value)
   char __str[80], *_str;
   int  i;
 
-  /* sprintf(_str,"%12.6G",value); */
+  /* snprintf(_str,sizeof(__str),"%12.6G",value); */
   _str=__str+2;
   if (value>=0.0)
    if ((value!=0.0) && ((value>0.99999999e12) || (value<0.0001))) {
@@ -1185,7 +1185,7 @@ static void number(char *str,LPSREAL value)
 
     do {
      n--;
-     i=sprintf(_str,"%*.*E",n,n-6,(double) value);
+     i=snprintf(_str,sizeof(__str)-2,"%*.*E",n,n-6,(double) value);
      if (i>12) {
       char *ptr=strchr(_str,'E');
 
@@ -1203,11 +1203,11 @@ static void number(char *str,LPSREAL value)
     int n=13;
 
     do {
-     i=sprintf(_str,"%*.0f",--n,(double) value);
+     i=snprintf(_str,sizeof(__str)-2,"%*.0f",--n,(double) value);
     } while (i>12);
    }
    else {
-    if (((i=sprintf(_str,"%12.10f",(double) value))>12) && (_str[12]>='5')) {
+    if (((i=snprintf(_str,sizeof(__str)-2,"%12.10f",(double) value))>12) && (_str[12]>='5')) {
      for (i=11;i>=0;i--)
       if (_str[i]!='.') {
        if (++_str[i]>'9') _str[i]='0';
@@ -1225,7 +1225,7 @@ static void number(char *str,LPSREAL value)
 
     do {
      n--;
-     i=sprintf(_str,"%*.*E",n,n-7,(double) value);
+     i=snprintf(_str,sizeof(__str)-2,"%*.*E",n,n-7,(double) value);
      if (i>12) {
       char *ptr=strchr(_str,'E');
 
@@ -1243,11 +1243,11 @@ static void number(char *str,LPSREAL value)
     int n=13;
 
     do {
-     i=sprintf(_str,"%*.0f",--n,(double) value);
+     i=snprintf(_str,sizeof(__str)-2,"%*.0f",--n,(double) value);
     } while (i>12);
    }
    else
-    if (((i=sprintf(_str,"%12.9f",(double) value))>12) && (_str[12]>='5')) {
+    if (((i=snprintf(_str,sizeof(__str)-2,"%12.9f",(double) value))>12) && (_str[12]>='5')) {
      for (i=11;i>=1;i--)
       if (_str[i]!='.') {
        if (++_str[i]>'9') _str[i]='0';
@@ -1266,7 +1266,7 @@ static void number(char *str,LPSREAL value)
 static char *formatnumber12(char *numberbuffer, double a)
 {
 #if 0
-  return(sprintf(numberbuffer, "%12g", a));
+  return(snprintf(numberbuffer, sizeof(numberbuffer), "%12g", a));
 #else
   number(numberbuffer, a);
   return(numberbuffer);
@@ -1275,7 +1275,7 @@ static char *formatnumber12(char *numberbuffer, double a)
 
 STATIC char *MPSnameFIXED(char *name0, char *name)
 {
-  sprintf(name0, "%-8.8s", name);
+  snprintf(name0, 9, "%-8.8s", name);
   return(name0);
 }
 
@@ -1580,7 +1580,7 @@ static int __WINAPI write_lpdata(void *userhandle, char *buf)
 
 MYBOOL MPS_writefile(lprec *lp, int typeMPS, char *filename)
 {
-  FILE *output = stdout;
+  FILE *output; /* = stdout; */
   MYBOOL ok;
 
   if (filename != NULL) {
@@ -1791,7 +1791,7 @@ MYBOOL MPS_writeBAS(lprec *lp, int typeMPS, char *filename)
   int    ib, in;
   MYBOOL ok;
   char   name1[100], name2[100];
-  FILE   *output = stdout;
+  FILE   *output; /*  = stdout; */
   char * (*MPSname)(char *name0, char *name);
   char name0[9];
 

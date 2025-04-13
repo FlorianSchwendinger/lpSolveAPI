@@ -1,3 +1,4 @@
+#include <R.h>
 
 /* Create a row-based version of L0.
    This makes it possible to solve L0'x=h (btran) faster for sparse h,
@@ -148,8 +149,8 @@ void LU6L0T_v(LUSOLrec *LUSOL, LUSOLmat *mat, LPSREAL V[], int NZidx[], int *INF
 #else
         TEMP = V[J];
         V[J] += VPIV * mat->a[L];
-        printf("V[%3d] = V[%3d] + L[%d,%d]*V[%3d]\n", J, J, KK,J, KK);
-        printf("%6g = %6g + %6g*%6g\n", V[J], TEMP, mat->a[L], VPIV);
+        Rprintf("V[%3d] = V[%3d] + L[%d,%d]*V[%3d]\n", J, J, KK,J, KK);
+        Rprintf("%6g = %6g + %6g*%6g\n", V[J], TEMP, mat->a[L], VPIV);
 #endif
       }
 #endif

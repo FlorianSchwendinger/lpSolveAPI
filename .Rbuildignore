@@ -1,3 +1,7 @@
 ^Makefile
 ^work
 ^Rcheck-all
+^lpSolveAPI.Rcheck
+^lpSolveAPI.Rcheck-all
+lpSolveAPI_.*.tar.gz
+Taskfile.yml

@@ -67,7 +67,7 @@
       know about them.  */
    enum lp_yytokentype {
      VAR = 258,
-     CONS = 259,
+     LPSCONS = 259,
      INTCONS = 260,
      VARIABLECOLON = 261,
      INF = 262,
@@ -92,7 +92,7 @@
 #endif
 /* Tokens.  */
 #define VAR 258
-#define CONS 259
+#define LPSCONS 259
 #define INTCONS 260
 #define VARIABLECOLON 261
 #define INF 262
@@ -123,6 +123,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <ctype.h>
+#include <R.h>
 
 #define scanner lp_yyscanner
 #define PARM lp_yyget_extra(lp_yyscanner)
@@ -568,7 +569,7 @@ static const lp_yytype_uint16 lp_yyrline[] =
    First, the terminals, then, starting at YYNTOKENS, nonterminals.  */
 static const char *const lp_yytname[] =
 {
-  "$end", "error", "$undefined", "VAR", "CONS", "INTCONS",
+  "$end", "error", "$undefined", "VAR", "LPSCONS", "INTCONS",
   "VARIABLECOLON", "INF", "SEC_INT", "SEC_BIN", "SEC_SEC", "SEC_SOS",
   "SOSDESCR", "SEC_FREE", "TOK_SIGN", "AR_M_OP", "RE_OPEQ", "RE_OPLE",
   "RE_OPGE", "END_C", "COMMA", "COLON", "MINIMISE", "MAXIMISE",
@@ -841,7 +842,7 @@ while (YYID (0))
 
 # ifndef YYFPRINTF
 #  include <stdio.h> /* INFRINGES ON USER NAME SPACE */
-#  define YYFPRINTF fprintf
+#  define YYFPRINTF Rprintf
 # endif
 
 # define YYDPRINTF(Args)			\
@@ -854,10 +855,6 @@ do {						\
 do {									  \
   if (lp_yydebug)								  \
     {									  \
-      YYFPRINTF (stderr, "%s ", Title);					  \
-      lp_yy_symbol_print (stderr,						  \
-		  Type, Value, parm, scanner); \
-      YYFPRINTF (stderr, "\n");						  \
     }									  \
 } while (YYID (0))
 
@@ -942,10 +939,7 @@ lp_yy_stack_print (bottom, top)
     lp_yytype_int16 *top;
 #endif
 {
-  YYFPRINTF (stderr, "Stack now");
-  for (; bottom <= top; ++bottom)
-    YYFPRINTF (stderr, " %d", *bottom);
-  YYFPRINTF (stderr, "\n");
+
 }
 
 # define YY_STACK_PRINT(Bottom, Top)				\
@@ -971,22 +965,7 @@ lp_yy_reduce_print (lp_yyvsp, lp_yyrule, parm, scanner)
     parse_parm *parm;
     void *scanner;
 #endif
-{
-  int lp_yynrhs = lp_yyr2[lp_yyrule];
-  int lp_yyi;
-  unsigned long int lp_yylno = lp_yyrline[lp_yyrule];
-  YYFPRINTF (stderr, "Reducing stack by rule %d (line %lu):\n",
-	     lp_yyrule - 1, lp_yylno);
-  /* The symbols being reduced.  */
-  for (lp_yyi = 0; lp_yyi < lp_yynrhs; lp_yyi++)
-    {
-      fprintf (stderr, "   $%d = ", lp_yyi + 1);
-      lp_yy_symbol_print (stderr, lp_yyrhs[lp_yyprhs[lp_yyrule] + lp_yyi],
-		       &(lp_yyvsp[(lp_yyi + 1) - (lp_yynrhs)])
-		       		       , parm, scanner);
-      fprintf (stderr, "\n");
-    }
-}
+{}
 
 # define YY_REDUCE_PRINT(Rule)		\
 do {					\
@@ -1021,7 +1000,7 @@ int lp_yydebug;
 # define YYMAXDEPTH 10000
 #endif
 
-
+
 
 #if YYERROR_VERBOSE
 
@@ -1209,7 +1188,7 @@ lp_yysyntax_error (char *lp_yyresult, int lp_yystate, int lp_yychar)
 
       if (lp_yyresult)
 	{
-	  /* Avoid sprintf, as that infringes on the user's name space.
+	  /* Avoid s-printf, as that infringes on the user's name space.
 	     Don't have undefined behavior even if the translation
 	     produced a string with the wrong number of "%s"s.  */
 	  char *lp_yyp = lp_yyresult;
@@ -1374,7 +1353,7 @@ int lp_yynerrs;
      Keep to zero when no symbol should be popped.  */
   int lp_yylen = 0;
 
-  YYDPRINTF ((stderr, "Starting parse\n"));
+  YYDPRINTF (("Starting parse\n"));
 
   lp_yystate = 0;
   lp_yyerrstatus = 0;
@@ -1460,14 +1439,14 @@ int lp_yynerrs;
       lp_yyvsp = lp_yyvs + lp_yysize - 1;
 
 
-      YYDPRINTF ((stderr, "Stack size increased to %lu\n",
+      YYDPRINTF (("Stack size increased to %lu\n",
 		  (unsigned long int) lp_yystacksize));
 
       if (lp_yyss + lp_yystacksize - 1 <= lp_yyssp)
 	YYABORT;
     }
 
-  YYDPRINTF ((stderr, "Entering state %d\n", lp_yystate));
+  YYDPRINTF (("Entering state %d\n", lp_yystate));
 
   goto lp_yybackup;
 
@@ -1489,14 +1468,14 @@ lp_yybackup:
   /* YYCHAR is either YYEMPTY or YYEOF or a valid look-ahead symbol.  */
   if (lp_yychar == YYEMPTY)
     {
-      YYDPRINTF ((stderr, "Reading a token: "));
+      YYDPRINTF (("Reading a token: "));
       lp_yychar = YYLEX;
     }
 
   if (lp_yychar <= YYEOF)
     {
       lp_yychar = lp_yytoken = YYEOF;
-      YYDPRINTF ((stderr, "Now at end of input.\n"));
+      YYDPRINTF (("Now at end of input.\n"));
     }
   else
     {
@@ -2078,7 +2057,7 @@ lp_yyreduce:
     char buf[16];
 
     pv->SOSweight++;
-    sprintf(buf, "SOS%d", pv->SOSweight);
+    snprintf(buf, sizeof(buf), "SOS%d", pv->SOSweight);
     storevarandweight(pp, buf);
 
     check_int_sec_sos_free_decl(pp, (int) pv->Within_int_decl, (int) pv->Within_sec_decl, 2, (int) pv->Within_free_decl);
@@ -2130,7 +2109,7 @@ lp_yyreduce:
     char buf[16];
 
     pv->SOSweight++;
-    sprintf(buf, "SOS%d", pv->SOSweight);
+    snprintf(buf, sizeof(buf), "SOS%d", pv->SOSweight);
     storevarandweight(pp, buf);
 
     check_int_sec_sos_free_decl(pp, (int) pv->Within_int_decl, (int) pv->Within_sec_decl, 2, (int) pv->Within_free_decl);

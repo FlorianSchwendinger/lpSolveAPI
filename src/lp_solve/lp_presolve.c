@@ -3633,7 +3633,7 @@ STATIC MYBOOL presolve_finalize(presolverec *psdata)
 
 STATIC MYBOOL presolve_debugdump(lprec *lp, presolverec *psdata, char *filename, MYBOOL doappend)
 {
-  FILE   *output = stdout;
+  FILE   *output; /* = stdout; */
   int   size;
   MYBOOL ok;
 
@@ -4813,7 +4813,7 @@ STATIC int presolve_SOS1(presolverec *psdata, int *nCoeffChanged, int *nConRemov
 
         /* Define a new SOS instance */
         ix = SOS_count(lp) + 1;
-        sprintf(SOSname, "SOS_%d", ix);
+        snprintf(SOSname, sizeof(SOSname), "SOS_%d", ix);
         ix = add_SOS(lp, SOSname, 1, ix, 0, NULL, NULL);
         if(jx == EQ)
           SOS_set_GUB(lp->SOS, ix, TRUE);
@@ -5785,13 +5785,13 @@ write_lp(lp, "test_in.lp");    /* Write to lp-formatted file for debugging */
       else if((status == RUNNING) && (i >= NORMAL)) {
         char lonum[20], upnum[20];
         if(my_infinite(lp, Value1))
-          sprintf(lonum, "%13s", "-Inf");
+          snprintf(lonum, sizeof(lonum), "%13s", "-Inf");
         else
-          sprintf(lonum, "%+12g", Value1);
+          snprintf(lonum, sizeof(lonum), "%+12g", Value1);
         if(my_infinite(lp, Value2))
-          sprintf(upnum, "%-13s", "Inf");
+          snprintf(upnum, sizeof(upnum), "%-13s", "Inf");
         else
-          sprintf(upnum, "%+-12g", Value2);
+          snprintf(upnum, sizeof(upnum), "%+-12g", Value2);
         report(lp, i,    "%20s [ %s < Z < %s ]\n", "", lonum, upnum);
       }
 
