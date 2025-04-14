@@ -5831,14 +5831,6 @@ Finish:
   lp->wasPresolved  = TRUE;
   lp->timepresolved = timeNow();
 
-#if 0
-/*  write_mps(lp, "test_out.mps"); */ /* Must put here due to variable name mapping */
-  write_lp(lp, "test_out.lp");   /* Must put here due to variable name mapping */
-#endif
-#if 0
-  REPORT_debugdump(lp, "testint2.txt", FALSE);
-#endif
-
   return( status );
 
 }

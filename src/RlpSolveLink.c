@@ -2235,7 +2235,6 @@ SEXP RlpSolve_get_verbose(SEXP Slp)
 *******************************/
 
 /*print_constraints*/
-/*print_debugdump*/
 /*print_duals*/
 /*print_lp*/
 /*print_objective*/

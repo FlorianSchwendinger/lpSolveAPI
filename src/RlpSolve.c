@@ -388,7 +388,6 @@ void R_init_lpSolveAPI(DllInfo *info)
   R_RegisterCCallable(package, "is_debug", (DL_FUNC) is_debug);
   R_RegisterCCallable(package, "set_trace", (DL_FUNC) set_trace);
   R_RegisterCCallable(package, "is_trace", (DL_FUNC) is_trace);
-  R_RegisterCCallable(package, "print_debugdump", (DL_FUNC) print_debugdump);
   R_RegisterCCallable(package, "set_anti_degen", (DL_FUNC) set_anti_degen);
   R_RegisterCCallable(package, "get_anti_degen", (DL_FUNC) get_anti_degen);
   R_RegisterCCallable(package, "is_anti_degen", (DL_FUNC) is_anti_degen);

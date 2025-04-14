@@ -293,65 +293,6 @@ void blockWriteBMAT(FILE *output, const char *label, lprec* lp, int first, int l
     fprintf(output, "\n");
 }
 
-/* Do a generic readable data dump of key lp_solve model variables;
-   principally for run difference and debugging purposes */
-MYBOOL REPORT_debugdump(lprec *lp, char *filename, MYBOOL livedata)
-{
-  /* FILE   *output = stdout; */
-  FILE   *output;
-  MYBOOL ok;
-
-  ok = (MYBOOL) ((filename == NULL) || ((output = fopen(filename,"w")) != NULL));
-  if(!ok)
-    return(ok);
-  if((filename == NULL) && (lp->outstream != NULL))
-    output = lp->outstream;
-
-  fprintf(output, "\nGENERAL INFORMATION\n-------------------\n\n");
-  fprintf(output, "Model size:     %d rows (%d equalities, %d Lagrangean), %d columns (%d integers, %d SC, %d SOS, %d GUB)\n",
-                  lp->rows, lp->equalities, get_Lrows(lp), lp->columns,
-      lp->int_vars, lp->sc_vars, SOS_count(lp), GUB_count(lp));
-  fprintf(output, "Data size:      %d model non-zeros, %d invB non-zeros (engine is %s)\n",
-                  get_nonzeros(lp), my_if(lp->invB == NULL, 0, lp->bfp_nonzeros(lp, FALSE)), lp->bfp_name());
-  fprintf(output, "Internal sizes: %d rows allocated, %d columns allocated, %d columns used, %d eta length\n",
-                  lp->rows_alloc, lp->columns_alloc, lp->columns, my_if(lp->invB == NULL, 0, lp->bfp_colcount(lp)));
-  fprintf(output, "Memory use:     %d sparse matrix, %d eta\n",
-                  lp->matA->mat_alloc, my_if(lp->invB == NULL, 0, lp->bfp_memallocated(lp)));
-  fprintf(output, "Parameters:     Maximize=%d, Names used=%d, Scalingmode=%d, Presolve=%d, SimplexPivot=%d\n",
-                  is_maxim(lp), lp->names_used, lp->scalemode, lp->do_presolve, lp->piv_strategy);
-  fprintf(output, "Precision:      EpsValue=%g, EpsPrimal=%g, EpsDual=%g, EpsPivot=%g, EpsPerturb=%g\n",
-                  lp->epsvalue, lp->epsprimal, lp->epsdual, lp->epspivot, lp->epsperturb);
-  fprintf(output, "Stability:      AntiDegen=%d, Improvement=%d, Split variables at=%g\n",
-                  lp->improve, lp->anti_degen, lp->negrange);
-  fprintf(output, "B&B settings:   BB pivot rule=%d, BB branching=%s, BB strategy=%d, Integer precision=%g, MIP gaps=%g,%g\n",
-                  lp->bb_rule, my_boolstr(lp->bb_varbranch), lp->bb_floorfirst, lp->epsint, lp->mip_absgap, lp->mip_relgap);
-
-  fprintf(output, "\nCORE DATA\n---------\n\n");
-  blockWriteINT(output,  "Column starts", lp->matA->col_end, 0, lp->columns);
-  blockWriteINT(output,  "row_type", lp->row_type, 0, lp->rows);
-  blockWriteREAL(output, "orig_rhs", lp->orig_rhs, 0, lp->rows);
-  blockWriteREAL(output, "orig_lowbo", lp->orig_lowbo, 0, lp->sum);
-  blockWriteREAL(output, "orig_upbo", lp->orig_upbo, 0, lp->sum);
-  blockWriteINT(output,  "row_type", lp->row_type, 0, lp->rows);
-  blockWriteBOOL(output, "var_type", lp->var_type, 0, lp->columns, TRUE);
-  blockWriteAMAT(output, "A", lp, 0, lp->rows);
-
-  if(livedata) {
-    fprintf(output, "\nPROCESS DATA\n------------\n\n");
-    blockWriteREAL(output,  "Active rhs", lp->rhs, 0, lp->rows);
-    blockWriteINT(output,  "Basic variables", lp->var_basic, 0, lp->rows);
-    blockWriteBOOL(output, "is_basic", lp->is_basic, 0, lp->sum, TRUE);
-    blockWriteREAL(output, "lowbo", lp->lowbo, 0, lp->sum);
-    blockWriteREAL(output, "upbo", lp->upbo, 0, lp->sum);
-    if(lp->scalars != NULL)
-      blockWriteREAL(output, "scalars", lp->scalars, 0, lp->sum);
-  }
-
-  if(filename != NULL)
-    fclose(output);
-  return(ok);
-}
-
 
 /* High level reports for model results */
 

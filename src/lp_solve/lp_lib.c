@@ -500,10 +500,6 @@ void __WINAPI print_scales(lprec *lp)
 {
   REPORT_scales(lp);
 }
-MYBOOL __WINAPI print_debugdump(lprec *lp, char *filename)
-{
-  return(REPORT_debugdump(lp, filename, (MYBOOL) (get_total_iter(lp) > 0)));
-}
 void __WINAPI print_str(lprec *lp, char *str)
 {
   report(lp, lp->verbose, "%s", str);
@@ -5077,7 +5073,6 @@ MYBOOL set_callbacks(lprec *lp)
   lp->lp_solve_version        = lp_solve_version;
   lp->make_lp                 = make_lp;
   lp->print_constraints       = print_constraints;
-  lp->print_debugdump         = print_debugdump;
   lp->print_duals             = print_duals;
   lp->print_lp                = print_lp;
   lp->print_objective         = print_objective;
