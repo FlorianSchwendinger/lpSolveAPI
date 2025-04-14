@@ -5612,11 +5612,7 @@ write_lp(lp, "test_in.lp");    /* Write to lp-formatted file for debugging */
         break;
 
       /* Check if we can do elimination of rank-deficient equality constraints */
-      if(presolve_statuscheck(psdata, &status) && (psdata->EQmap->count > 1) &&
-         is_presolve(lp, PRESOLVE_LINDEP)) {
-#if 0
-        REPORT_mat_mmsave(lp, "A.mtx", NULL, FALSE, "Constraint matrix A");
-#endif
+      if(presolve_statuscheck(psdata, &status) && (psdata->EQmap->count > 1) && is_presolve(lp, PRESOLVE_LINDEP)) {
         presolve_singularities(psdata, &iCoeffChanged, &iConRemove, &iVarFixed, &iSum);
       }
 
@@ -5869,9 +5865,6 @@ STATIC MYBOOL postsolve(lprec *lp, int status)
   /* Check if we can clear the variable map */
   if(varmap_canunlock(lp))
     lp->varmap_locked = FALSE;
-#if 0
-  REPORT_mat_mmsave(lp, "basis.mtx", NULL, FALSE);  /* Write the current basis matrix (no OF) */
-#endif
 
   return( TRUE );
 }
