@@ -3631,46 +3631,6 @@ STATIC MYBOOL presolve_finalize(presolverec *psdata)
   return(mat_validate(lp->matA));
 }
 
-STATIC MYBOOL presolve_debugdump(lprec *lp, presolverec *psdata, char *filename, MYBOOL doappend)
-{
-  FILE   *output; /* = stdout; */
-  int   size;
-  MYBOOL ok;
-
-  ok = (MYBOOL) ((filename == NULL) || ((output = fopen(filename, my_if(doappend, "a", "w"))) != NULL));
-  if(!ok)
-    return(ok);
-  if((filename == NULL) && (lp->outstream != NULL))
-    output = lp->outstream;
-
-  fprintf(output, "\nPRESOLVE - Status at loop %d:%d:%d\n",
-                  psdata->outerloops, psdata->middleloops, psdata->innerloops);
-  fprintf(output, "Model size:     %d rows (%d equalities, %d less than), %d columns\n",
-                  psdata->rows->varmap->count, psdata->EQmap->count, psdata->LTmap->count, psdata->cols->varmap->count);
-
-  fprintf(output, "\nMAPPERS\n-------\n\n");
-  size = 1;
-  blockWriteINT(output,  "colmap", psdata->cols->varmap->map, 0, size*psdata->cols->varmap->size);
-  blockWriteINT(output,  "rowmap", psdata->rows->varmap->map, 0, size*psdata->rows->varmap->size);
-  blockWriteINT(output,  "EQmap",  psdata->EQmap->map,  0, size*psdata->EQmap->size);
-  blockWriteINT(output,  "LTmap",  psdata->LTmap->map,  0, size*psdata->LTmap->size);
-
-  fprintf(output, "\nCOUNTS\n------\n\n");
-  blockWriteINT(output, "plucount",  psdata->rows->plucount,  0, lp->rows);
-  blockWriteINT(output, "negcount",  psdata->rows->negcount,  0, lp->rows);
-  blockWriteINT(output, "pluneg",    psdata->rows->pluneg,    0, lp->rows);
-
-  fprintf(output, "\nSUMS\n----\n\n");
-  blockWriteREAL(output, "pluupper", psdata->rows->pluupper, 0, lp->rows);
-  blockWriteREAL(output, "negupper", psdata->rows->negupper, 0, lp->rows);
-  blockWriteREAL(output, "plulower", psdata->rows->pluupper, 0, lp->rows);
-  blockWriteREAL(output, "neglower", psdata->rows->negupper, 0, lp->rows);
-
-  if(filename != NULL)
-    fclose(output);
-  return(ok);
-}
-
 int CMP_CALLMODEL compRedundant(const UNIONTYPE QSORTrec *current, const UNIONTYPE QSORTrec *candidate)
 {
   int start1 = (int) (current->int4.intpar1),
