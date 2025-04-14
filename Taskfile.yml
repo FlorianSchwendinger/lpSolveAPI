@@ -53,9 +53,15 @@ tasks:
       - rm -f Manual.pdf
       - rm -rf .Rd2pdf*
       - rm -rf lpSolveAPI.Rcheck
+      - rm -f lpSolveAPI_*.tar.gz
 
   winbuilder_check_devel:
     cmds:
       - task build
       - R -e "devtools::check_win_devel(email = 'FlorianSchwendinger@gmx.at')"
+
+  rhub:
+    cmds:
+      - R -e 'rhub::rhub_check(platforms = c("linux", "m1-san", "macos", "macos-arm64", "windows", "clang20", "gcc-asan", "rchk", "valgrind"))'
+
 
