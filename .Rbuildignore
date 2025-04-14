@@ -5,3 +5,4 @@
 ^lpSolveAPI.Rcheck-all
 lpSolveAPI_.*.tar.gz
 Taskfile.yml
+.github

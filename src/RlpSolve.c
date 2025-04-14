@@ -364,7 +364,6 @@ void R_init_lpSolveAPI(DllInfo *info)
   R_RegisterCCallable(package, "LP_readhandle", (DL_FUNC) LP_readhandle);
   R_RegisterCCallable(package, "read_lp", (DL_FUNC) read_lp);
   R_RegisterCCallable(package, "read_LP", (DL_FUNC) read_LP);
-  R_RegisterCCallable(package, "write_basis", (DL_FUNC) write_basis);
   R_RegisterCCallable(package, "read_basis", (DL_FUNC) read_basis);
   R_RegisterCCallable(package, "write_params", (DL_FUNC) write_params);
   R_RegisterCCallable(package, "read_params", (DL_FUNC) read_params);

@@ -359,11 +359,6 @@ lprec * __WINAPI read_LP(char *filename, int verbose, char *lp_name)
 }
 #endif
 
-MYBOOL __WINAPI write_basis(lprec *lp, char *filename)
-{
-  int typeMPS = MPSFIXED;
-  return( MPS_writeBAS(lp, typeMPS, filename) );
-}
 MYBOOL __WINAPI read_basis(lprec *lp, char *filename, char *info)
 {
   int typeMPS = MPSFIXED;
@@ -5189,7 +5184,6 @@ MYBOOL set_callbacks(lprec *lp)
   lp->write_MPS               = write_MPS;
   lp->write_freeMPS           = write_freeMPS;
   lp->write_XLI               = write_XLI;
-  lp->write_basis             = write_basis;
   lp->write_params            = write_params;
 
   /* Utility functions (mainly for BFPs) */
