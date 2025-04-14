@@ -183,7 +183,7 @@ void __WINAPI set_outputstream(lprec *lp, FILE *stream)
 MYBOOL __WINAPI set_outputfile(lprec *lp, char *filename)
 {
   MYBOOL ok;
-  FILE   *output; /* = stdout; */
+  FILE   *output = NULL;
 
   ok = (MYBOOL) ((filename == NULL) || (*filename == 0) || ((output = fopen(filename,"w")) != NULL));
   if(ok) {
