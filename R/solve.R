@@ -1,4 +1,3 @@
-solve.lpExtPtr <- function(a, b, ...)
+solve.lpExtPtr <- function(a, b, ...) {
   .Call(RlpSolve_solve, a)
-
-
+}

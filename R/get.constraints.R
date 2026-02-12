@@ -1,4 +1,3 @@
-get.constraints <- function(lprec)
+get.constraints <- function(lprec) {
   .Call(RlpSolve_get_constraints, lprec)
-
-
+}

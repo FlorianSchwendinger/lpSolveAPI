@@ -1,9 +1,7 @@
-get.primal.solution <- function(lprec, orig = FALSE)
-{
-  if(orig)
+get.primal.solution <- function(lprec, orig = FALSE) {
+  if (orig) {
     .Call(RlpSolve_get_var_primalresult, lprec)
-  else
+  } else {
     .Call(RlpSolve_get_primal_solution, lprec)
+  }
 }
-
-
