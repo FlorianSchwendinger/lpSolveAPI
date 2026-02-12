@@ -1,9 +1,9 @@
-get.kind <- function(lprec, columns = 1:n)
-{
+get.kind <- function(lprec, columns = 1:n) {
   n <- dim(lprec)[2]
 
-  if(n < 1)
+  if (n < 1) {
     columns <- integer(0)
+  }
 
   ans <- rep("standard", length(columns))
 
@@ -15,5 +15,3 @@ get.kind <- function(lprec, columns = 1:n)
 
   ans
 }
-
-

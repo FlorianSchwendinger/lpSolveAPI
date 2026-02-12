@@ -1,33 +1,68 @@
-lp.control <- function(lprec, ..., reset = FALSE)
-{
-  if(reset)
+lp.control <- function(lprec, ..., reset = FALSE) {
+  if (reset) {
     .Call(RlpSolve_reset_params, lprec)
+  }
 
   status <- list()
   dots <- list(...)
   dot.names <- names(dots)
-  controls <- c("anti.degen", "basis.crash", "bb.depthlimit", "bb.floorfirst",
-                "bb.rule", "break.at.first", "break.at.value",  "epslevel",
-                "epsb", "epsd", "epsel", "epsint", "epsperturb", "epspivot",
-                "improve", "infinite", "maxpivot", "mip.gap", "negrange",
-                "obj.in.basis", "pivoting", "presolve", "scalelimit", "scaling",
-                "sense", "simplextype", "timeout", "verbose")
+  controls <- c(
+    "anti.degen",
+    "basis.crash",
+    "bb.depthlimit",
+    "bb.floorfirst",
+    "bb.rule",
+    "break.at.first",
+    "break.at.value",
+    "epslevel",
+    "epsb",
+    "epsd",
+    "epsel",
+    "epsint",
+    "epsperturb",
+    "epspivot",
+    "improve",
+    "infinite",
+    "maxpivot",
+    "mip.gap",
+    "negrange",
+    "obj.in.basis",
+    "pivoting",
+    "presolve",
+    "scalelimit",
+    "scaling",
+    "sense",
+    "simplextype",
+    "timeout",
+    "verbose"
+  )
   dot.names <- match.arg(dot.names, controls, several.ok = TRUE)
 
-  for(dot.name in dot.names) {
-    switch(dot.name,
+  for (dot.name in dot.names) {
+    switch(
+      dot.name,
 
       "anti.degen" = {
         anti.degen <- dots[[dot.name]]
 
-        methods <- c("none", "fixedvars", "columncheck", "stalling",
-                     "numfailure", "lostfeas", "infeasible", "dynamic",
-                     "duringbb", "rhsperturb", "boundflip")
+        methods <- c(
+          "none",
+          "fixedvars",
+          "columncheck",
+          "stalling",
+          "numfailure",
+          "lostfeas",
+          "infeasible",
+          "dynamic",
+          "duringbb",
+          "rhsperturb",
+          "boundflip"
+        )
         anti.degen <- match.arg(anti.degen, methods, several.ok = TRUE)
 
-        if(any(anti.degen == "none"))
+        if (any(anti.degen == "none")) {
           anti.degen <- 0
-        else {
+        } else {
           idx <- 2^(0:9)
           names(idx) <- methods[-1]
           anti.degen <- sum(idx[anti.degen])
@@ -68,26 +103,36 @@ lp.control <- function(lprec, ..., reset = FALSE)
       "bb.rule" = {
         bb.rule <- dots[[dot.name]]
 
-        rules <- c("first", "gap", "range", "fraction", "pseudocost",
-                   "pseudononint", "pseudoratio")
+        rules <- c("first", "gap", "range", "fraction", "pseudocost", "pseudononint", "pseudoratio")
         rule <- match.arg(bb.rule[1], rules, several.ok = FALSE)
         idx <- 0:6
         names(idx) <- rules
         rule <- idx[rule]
 
         bb.rule <- bb.rule[-1]
-        if(length(bb.rule)) {
-          all.values <- c("weightreverse", "branchreverse", "greedy",
-                          "pseudocost", "depthfirst", "randomize", "gub",
-                          "dynamic", "restart", "breadthfirst", "autoorder",
-                          "rcostfixing", "stronginit")
+        if (length(bb.rule)) {
+          all.values <- c(
+            "weightreverse",
+            "branchreverse",
+            "greedy",
+            "pseudocost",
+            "depthfirst",
+            "randomize",
+            "gub",
+            "dynamic",
+            "restart",
+            "breadthfirst",
+            "autoorder",
+            "rcostfixing",
+            "stronginit"
+          )
           values <- match.arg(bb.rule, all.values, several.ok = TRUE)
           idx <- 2^(3:15)
           names(idx) <- all.values
           values <- idx[values]
-        }
-        else
+        } else {
           values <- double(0)
+        }
 
         bb.rule <- sum(c(rule, values))
         .Call(RlpSolve_set_bb_rule, lprec, as.integer(bb.rule))
@@ -150,9 +195,9 @@ lp.control <- function(lprec, ..., reset = FALSE)
         methods <- c("none", "solution", "dualfeas", "thetagap", "bbsimplex")
         improve <- match.arg(improve, methods, several.ok = TRUE)
 
-        if(any(improve == "none"))
+        if (any(improve == "none")) {
           improve <- 0
-        else {
+        } else {
           idx <- 2^(0:3)
           names(idx) <- methods[-1]
           improve <- sum(idx[improve])
@@ -174,13 +219,12 @@ lp.control <- function(lprec, ..., reset = FALSE)
       "mip.gap" = {
         mip.gap <- dots[[dot.name]]
 
-        if(length(mip.gap) != 2)
+        if (length(mip.gap) != 2) {
           mip.gap <- rep(mip.gap[1], 2)
+        }
 
-        .Call(RlpSolve_set_mip_gap, lprec, as.logical(TRUE),
-              as.double(mip.gap[1]))
-        .Call(RlpSolve_set_mip_gap, lprec, as.logical(FALSE),
-              as.double(mip.gap[2]))
+        .Call(RlpSolve_set_mip_gap, lprec, as.logical(TRUE), as.double(mip.gap[1]))
+        .Call(RlpSolve_set_mip_gap, lprec, as.logical(FALSE), as.double(mip.gap[2]))
       },
 
       "negrange" = {
@@ -203,17 +247,26 @@ lp.control <- function(lprec, ..., reset = FALSE)
         rule <- idx[rule]
 
         pivoting <- pivoting[-1]
-        if(length(pivoting)) {
-          all.modes <- c("primalfallback", "multiple", "partial", "adaptive",
-                         "randomize", "autopartial", "loopleft",
-                         "loopalternate", "harristwopass", "truenorminit")
+        if (length(pivoting)) {
+          all.modes <- c(
+            "primalfallback",
+            "multiple",
+            "partial",
+            "adaptive",
+            "randomize",
+            "autopartial",
+            "loopleft",
+            "loopalternate",
+            "harristwopass",
+            "truenorminit"
+          )
           modes <- match.arg(pivoting, all.modes, several.ok = TRUE)
           idx <- c(4, 8, 16, 32, 128, 512, 1024, 2048, 4096, 16384)
           names(idx) <- all.modes
           modes <- idx[modes]
-        }
-        else
+        } else {
           modes <- double(0)
+        }
 
         pivoting <- sum(c(rule, modes))
         .Call(RlpSolve_set_pivoting, lprec, as.integer(pivoting))
@@ -222,24 +275,40 @@ lp.control <- function(lprec, ..., reset = FALSE)
       "presolve" = {
         presolve <- dots[[dot.name]]
 
-        methods <- c("none", "rows", "cols", "lindep", "sos", "reducemip",
-                     "knapsack", "elimeq2", "impliedfree", "reducedgcd",
-                     "probefix", "probereduce", "rowdominate", "coldominate",
-                     "mergerows", "impliedslk", "colfixdual", "bounds", "duals",
-                     "sensduals")
+        methods <- c(
+          "none",
+          "rows",
+          "cols",
+          "lindep",
+          "sos",
+          "reducemip",
+          "knapsack",
+          "elimeq2",
+          "impliedfree",
+          "reducedgcd",
+          "probefix",
+          "probereduce",
+          "rowdominate",
+          "coldominate",
+          "mergerows",
+          "impliedslk",
+          "colfixdual",
+          "bounds",
+          "duals",
+          "sensduals"
+        )
         presolve <- match.arg(presolve, methods, several.ok = TRUE)
 
-        if(any(presolve == "none"))
+        if (any(presolve == "none")) {
           presolve <- 0
-        else {
+        } else {
           idx <- c(2^(0:2), 2^(5:20))
           names(idx) <- methods[-1]
           presolve <- sum(idx[presolve])
         }
 
         loops <- .Call(RlpSolve_get_presolveloops, lprec)
-        .Call(RlpSolve_set_presolve, lprec, as.integer(presolve),
-              as.integer(loops))
+        .Call(RlpSolve_set_presolve, lprec, as.integer(presolve), as.integer(loops))
       },
 
       "scalelimit" = {
@@ -250,29 +319,35 @@ lp.control <- function(lprec, ..., reset = FALSE)
       "scaling" = {
         scaling <- dots[[dot.name]]
 
-        types <- c("none", "extreme", "range", "mean", "geometric",
-                   "curtisreid")
+        types <- c("none", "extreme", "range", "mean", "geometric", "curtisreid")
         type <- match.arg(scaling[1], types, several.ok = FALSE)
 
-        if(any(type == "none"))
+        if (any(type == "none")) {
           scaling <- 0
-
-        else {
+        } else {
           idx <- c(0, 1, 2, 3, 4, 7)
           names(idx) <- types
           type <- idx[type]
 
           scaling <- scaling[-1]
-          if(length(scaling)) {
-            all.modes <- c("quadratic", "logarithmic", "power2", "equilibrate",
-                           "integers", "dynupdate", "rowsonly", "colsonly")
+          if (length(scaling)) {
+            all.modes <- c(
+              "quadratic",
+              "logarithmic",
+              "power2",
+              "equilibrate",
+              "integers",
+              "dynupdate",
+              "rowsonly",
+              "colsonly"
+            )
             modes <- match.arg(scaling, all.modes, several.ok = TRUE)
             idx <- 2^(3:10)
             names(idx) <- all.modes
             modes <- idx[modes]
-          }
-          else
+          } else {
             modes <- double(0)
+          }
 
           scaling <- sum(c(type, modes))
         }
@@ -289,23 +364,21 @@ lp.control <- function(lprec, ..., reset = FALSE)
 
       "simplextype" = {
         simplextype <- dots[[dot.name]]
-        simplextype <- match.arg(simplextype, c("primal", "dual"),
-                                 several.ok = TRUE)
+        simplextype <- match.arg(simplextype, c("primal", "dual"), several.ok = TRUE)
 
-        if(length(simplextype) != 2)
+        if (length(simplextype) != 2) {
           simplextype <- rep(simplextype[1], 2)
+        }
 
-        if(simplextype[1] == "primal" && simplextype[2] == "primal")
+        if (simplextype[1] == "primal" && simplextype[2] == "primal") {
           simplextype <- 5
-
-        else if(simplextype[1] == "primal" && simplextype[2] == "dual")
+        } else if (simplextype[1] == "primal" && simplextype[2] == "dual") {
           simplextype <- 9
-
-        else if(simplextype[1] == "dual" && simplextype[2] == "primal")
+        } else if (simplextype[1] == "dual" && simplextype[2] == "primal") {
           simplextype <- 6
-
-        else if(simplextype[1] == "dual" && simplextype[2] == "dual")
+        } else if (simplextype[1] == "dual" && simplextype[2] == "dual") {
           simplextype <- 10
+        }
 
         .Call(RlpSolve_set_simplextype, lprec, as.integer(simplextype))
       },
@@ -317,8 +390,7 @@ lp.control <- function(lprec, ..., reset = FALSE)
 
       "verbose" = {
         verbose <- dots[[dot.name]]
-        ch <- c("neutral", "critical", "severe", "important", "normal",
-                "detailed", "full")
+        ch <- c("neutral", "critical", "severe", "important", "normal", "detailed", "full")
         verbose <- match.arg(verbose, choices = ch)
         verbose <- match(verbose, table = ch) - 1
 
@@ -327,15 +399,27 @@ lp.control <- function(lprec, ..., reset = FALSE)
     )
   }
 
-  anti.degen <- .Call(RlpSolve_is_anti_degen, lprec,
-                      as.integer(c(0,1,2,4,8,16,32,64,128,256,512)))
-  anti.degen <- c("none", "fixedvars", "columncheck", "stalling", "numfailure",
-                  "lostfeas", "infeasible", "dynamic", "duringbb", "rhsperturb",
-                  "boundflip")[anti.degen]
+  anti.degen <- .Call(
+    RlpSolve_is_anti_degen,
+    lprec,
+    as.integer(c(0, 1, 2, 4, 8, 16, 32, 64, 128, 256, 512))
+  )
+  anti.degen <- c(
+    "none",
+    "fixedvars",
+    "columncheck",
+    "stalling",
+    "numfailure",
+    "lostfeas",
+    "infeasible",
+    "dynamic",
+    "duringbb",
+    "rhsperturb",
+    "boundflip"
+  )[anti.degen]
 
   basis.crash <- .Call(RlpSolve_get_basiscrash, lprec)
-  basis.crash <- c("none", "NOT USED", "mostfeasible",
-                   "leastdegenerate")[1 + basis.crash]
+  basis.crash <- c("none", "NOT USED", "mostfeasible", "leastdegenerate")[1 + basis.crash]
 
   bb.depthlimit <- .Call(RlpSolve_get_bb_depthlimit, lprec)
 
@@ -344,58 +428,84 @@ lp.control <- function(lprec, ..., reset = FALSE)
 
   bb.rule.index <- .Call(RlpSolve_get_bb_rule, lprec)
   bb.rule <- bb.rule.index %% 8
-  bb.rule <- c("first", "gap", "range", "fraction", "pseudocost",
-               "pseudononint", "pseudoratio", "user")[1 + bb.rule]
+  bb.rule <- c(
+    "first",
+    "gap",
+    "range",
+    "fraction",
+    "pseudocost",
+    "pseudononint",
+    "pseudoratio",
+    "user"
+  )[1 + bb.rule]
 
   bb.value.index <- integer(0)
 
-  for(i in 15:3) {
+  for (i in 15:3) {
     temp <- 2^i
-    if(floor(bb.rule.index / temp) == 1) {
+    if (floor(bb.rule.index / temp) == 1) {
       bb.value.index <- c(i, bb.value.index)
       bb.rule.index <- bb.rule.index - temp
     }
   }
 
-  bb.rule <- c(bb.rule, c("weightreverse", "branchreverse", "greedy",
-               "pseudocost", "depthfirst", "randomize", "gub", "dynamic",
-               "restart", "breadthfirst", "autoorder", "rcostfixing",
-               "stronginit")[bb.value.index - 2])
+  bb.rule <- c(
+    bb.rule,
+    c(
+      "weightreverse",
+      "branchreverse",
+      "greedy",
+      "pseudocost",
+      "depthfirst",
+      "randomize",
+      "gub",
+      "dynamic",
+      "restart",
+      "breadthfirst",
+      "autoorder",
+      "rcostfixing",
+      "stronginit"
+    )[bb.value.index - 2]
+  )
 
   break.at.first <- .Call(RlpSolve_is_break_at_first, lprec)
 
   break.at.value <- .Call(RlpSolve_get_break_at_value, lprec)
 
-  epsilon <- c(epsb = .Call(RlpSolve_get_epsb, lprec),
-               epsd = .Call(RlpSolve_get_epsd, lprec),
-               epsel = .Call(RlpSolve_get_epsel, lprec),
-               epsint = .Call(RlpSolve_get_epsint, lprec),
-               epsperturb = .Call(RlpSolve_get_epsperturb, lprec),
-               epspivot = .Call(RlpSolve_get_epspivot, lprec))
+  epsilon <- c(
+    epsb = .Call(RlpSolve_get_epsb, lprec),
+    epsd = .Call(RlpSolve_get_epsd, lprec),
+    epsel = .Call(RlpSolve_get_epsel, lprec),
+    epsint = .Call(RlpSolve_get_epsint, lprec),
+    epsperturb = .Call(RlpSolve_get_epsperturb, lprec),
+    epspivot = .Call(RlpSolve_get_epspivot, lprec)
+  )
 
   improve <- .Call(RlpSolve_get_improve, lprec)
   improve.index <- integer(0)
 
-  for(i in 3:0) {
+  for (i in 3:0) {
     temp <- 2^i
-    if(floor(improve / temp) == 1) {
+    if (floor(improve / temp) == 1) {
       improve.index <- c(i, improve.index)
-      improve <-improve - temp
+      improve <- improve - temp
     }
   }
 
-  if(length(improve.index))
-    improve <- c("solution", "dualfeas", "thetagap",
-                 "bbsimplex")[1 + improve.index]
-  else
+  if (length(improve.index)) {
+    improve <- c("solution", "dualfeas", "thetagap", "bbsimplex")[1 + improve.index]
+  } else {
     improve <- "none"
+  }
 
   infinite <- .Call(RlpSolve_get_infinite, lprec)
 
   maxpivot <- .Call(RlpSolve_get_maxpivot, lprec)
 
-  mip.gap <- c(absolute = .Call(RlpSolve_get_mip_gap, lprec, TRUE),
-               relative = .Call(RlpSolve_get_mip_gap, lprec, FALSE))
+  mip.gap <- c(
+    absolute = .Call(RlpSolve_get_mip_gap, lprec, TRUE),
+    relative = .Call(RlpSolve_get_mip_gap, lprec, FALSE)
+  )
 
   negrange <- .Call(RlpSolve_get_negrange, lprec)
 
@@ -403,56 +513,99 @@ lp.control <- function(lprec, ..., reset = FALSE)
 
   pivot.rule <- .Call(RlpSolve_is_piv_rule, lprec, as.integer(0:3))
   pivot.rule <- c("firstindex", "dantzig", "devex", "steepestedge")[pivot.rule]
-  pivot.mode <- .Call(RlpSolve_is_piv_mode, lprec,
-                      as.integer(c(2^(2:5), 128, 2^(9:12), 16384)))
-  pivot.mode <- c("primalfallback", "multiple", "partial", "adaptive",
-                  "randomize", "autopartial", "loopleft", "loopalternate",
-                  "harristwopass", "truenorminit")[pivot.mode]
+  pivot.mode <- .Call(RlpSolve_is_piv_mode, lprec, as.integer(c(2^(2:5), 128, 2^(9:12), 16384)))
+  pivot.mode <- c(
+    "primalfallback",
+    "multiple",
+    "partial",
+    "adaptive",
+    "randomize",
+    "autopartial",
+    "loopleft",
+    "loopalternate",
+    "harristwopass",
+    "truenorminit"
+  )[pivot.mode]
   pivoting <- c(pivot.rule, pivot.mode)
 
-  presolve <- .Call(RlpSolve_is_presolve, lprec,
-                    as.integer(c(0, 2^(0:2), 2^(5:20))))
-  presolve <- c("none", "rows", "cols", "lindep", "sos", "reducemip",
-                "knapsack", "elimeq2", "impliedfree", "reducedgcd", "probefix",
-                "probereduce", "rowdominate", "coldominate", "mergerows",
-                "impliedslk", "colfixdual", "bounds", "duals",
-                "sensduals")[presolve]
+  presolve <- .Call(RlpSolve_is_presolve, lprec, as.integer(c(0, 2^(0:2), 2^(5:20))))
+  presolve <- c(
+    "none",
+    "rows",
+    "cols",
+    "lindep",
+    "sos",
+    "reducemip",
+    "knapsack",
+    "elimeq2",
+    "impliedfree",
+    "reducedgcd",
+    "probefix",
+    "probereduce",
+    "rowdominate",
+    "coldominate",
+    "mergerows",
+    "impliedslk",
+    "colfixdual",
+    "bounds",
+    "duals",
+    "sensduals"
+  )[presolve]
 
   scalelimit <- .Call(RlpSolve_get_scalelimit, lprec)
 
-  scale.type <- .Call(RlpSolve_is_scaletype, lprec, as.integer(c(0, 1,2,3,4,7)))
-  scale.type <- c("none", "extreme", "range", "mean", "geometric",
-                  "curtisreid")[scale.type]
-  scale.mode <- .Call(RlpSolve_is_scalemode, lprec,
-                      as.integer(c(8, 16, 2^(5:10))))
-  scale.mode <- c("quadratic", "logarithmic", "power2", "equilibrate",
-                  "integers", "dynupdate", "rowsonly", "colsonly")[scale.mode]
+  scale.type <- .Call(RlpSolve_is_scaletype, lprec, as.integer(c(0, 1, 2, 3, 4, 7)))
+  scale.type <- c("none", "extreme", "range", "mean", "geometric", "curtisreid")[scale.type]
+  scale.mode <- .Call(RlpSolve_is_scalemode, lprec, as.integer(c(8, 16, 2^(5:10))))
+  scale.mode <- c(
+    "quadratic",
+    "logarithmic",
+    "power2",
+    "equilibrate",
+    "integers",
+    "dynupdate",
+    "rowsonly",
+    "colsonly"
+  )[scale.mode]
   scaling <- c(scale.type, scale.mode)
 
   sense <- ifelse(.Call(RlpSolve_is_maxim, lprec), "maximize", "minimize")
 
-  simplextype <- switch(as.character(.Call(RlpSolve_get_simplextype, lprec)),
-                         "5" = c("primal", "primal"),
-                         "6" = c("dual", "primal"),
-                         "9" = c("primal", "dual"),
-                        "10" = c("dual", "dual")
-                       )
+  simplextype <- switch(
+    as.character(.Call(RlpSolve_get_simplextype, lprec)),
+    "5" = c("primal", "primal"),
+    "6" = c("dual", "primal"),
+    "9" = c("primal", "dual"),
+    "10" = c("dual", "dual")
+  )
 
   timeout <- .Call(RlpSolve_get_timeout, lprec)
 
-  ch <- c("neutral", "critical", "severe", "important", "normal", "detailed",
-          "full")
-  verbose <- ch[1+.Call(RlpSolve_get_verbose, lprec)]
+  ch <- c("neutral", "critical", "severe", "important", "normal", "detailed", "full")
+  verbose <- ch[1 + .Call(RlpSolve_get_verbose, lprec)]
 
-  list(anti.degen = anti.degen, basis.crash = basis.crash,
-       bb.depthlimit = bb.depthlimit, bb.floorfirst = bb.floorfirst,
-       bb.rule = bb.rule, break.at.first = break.at.first,
-       break.at.value = break.at.value, epsilon = epsilon, improve = improve,
-       infinite = infinite, maxpivot = maxpivot, mip.gap = mip.gap,
-       negrange = negrange, obj.in.basis = obj.in.basis, pivoting = pivoting,
-       presolve = presolve, scalelimit = scalelimit, scaling = scaling,
-       sense = sense, simplextype = simplextype, timeout = timeout,
-       verbose = verbose)
+  list(
+    anti.degen = anti.degen,
+    basis.crash = basis.crash,
+    bb.depthlimit = bb.depthlimit,
+    bb.floorfirst = bb.floorfirst,
+    bb.rule = bb.rule,
+    break.at.first = break.at.first,
+    break.at.value = break.at.value,
+    epsilon = epsilon,
+    improve = improve,
+    infinite = infinite,
+    maxpivot = maxpivot,
+    mip.gap = mip.gap,
+    negrange = negrange,
+    obj.in.basis = obj.in.basis,
+    pivoting = pivoting,
+    presolve = presolve,
+    scalelimit = scalelimit,
+    scaling = scaling,
+    sense = sense,
+    simplextype = simplextype,
+    timeout = timeout,
+    verbose = verbose
+  )
 }
-
-

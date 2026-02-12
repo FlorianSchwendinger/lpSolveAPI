@@ -1,3 +1,6 @@
+<2026-02-12>
+* fix set.branch.mode issue
+* use air for formating
 <2023-11-28>
 * Fix CRAN warning "format string is not a string literal (potentially insecure) [-Wformat-security]".
 <2023-09-03>

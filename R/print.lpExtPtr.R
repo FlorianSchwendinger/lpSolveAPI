@@ -1,24 +1,32 @@
-print.lpExtPtr <- function(x, ...)
-{
+print.lpExtPtr <- function(x, ...) {
   m <- dim(x)[1]
   n <- dim(x)[2]
 
   control <- lp.control(x)
 
-  if(n < 1) {
+  if (n < 1) {
     cat(paste("Model name: ", name.lp(x), "\n", sep = ""))
     return(invisible(x))
   }
 
-  if(n > 8) {
-    cat(paste("Model name: ", name.lp(x), "\n", "  a linear program with ", n,
-              " decision variables and ", m, " constraints\n" , sep = ""))
+  if (n > 8) {
+    cat(paste(
+      "Model name: ",
+      name.lp(x),
+      "\n",
+      "  a linear program with ",
+      n,
+      " decision variables and ",
+      m,
+      " constraints\n",
+      sep = ""
+    ))
     return(invisible(x))
   }
 
   ans <- matrix(0.0, m + 1, n)
 
-  for(j in 1:n) {
+  for (j in 1:n) {
     col <- get.column(x, j)
     ans[1 + col$nzrow, j] <- col$column
   }
@@ -33,28 +41,23 @@ print.lpExtPtr <- function(x, ...)
   upper <- bounds$upper
   lower <- bounds$lower
 
-  ans <- format(rbind(dimnames(x)[[2]], ans, kind, type, upper, lower),
-                justify = "right")
+  ans <- format(rbind(dimnames(x)[[2]], ans, kind, type, upper, lower), justify = "right")
   sense <- ifelse(control$sense == "minimize", "Minimize", "Maximize")
 
   lhs <- get.constr.value(x, side = "lhs")
   rhs <- get.constr.value(x, side = "rhs")
 
-  rowNames <- format(c("", sense, dimnames(x)[[1]], "Kind", "Type", "Upper",
-                       "Lower"))
-  constrs <- format(c("", "", get.constr.type(x), "", "", "", ""),
-                    justify = "right")
-  rhs <- format(c("", "",  as.character(rhs), "", "", "", ""),
-				justify = "right")
-  print.lhs <- any(!is.infinite(lhs[is.element(get.constr.type(x,
-                   as.char = FALSE), c(1,2))]))
-  lhs <- format(c("", "",  as.character(lhs), "", "", "", ""),
-                justify = "right")
+  rowNames <- format(c("", sense, dimnames(x)[[1]], "Kind", "Type", "Upper", "Lower"))
+  constrs <- format(c("", "", get.constr.type(x), "", "", "", ""), justify = "right")
+  rhs <- format(c("", "", as.character(rhs), "", "", "", ""), justify = "right")
+  print.lhs <- any(!is.infinite(lhs[is.element(get.constr.type(x, as.char = FALSE), c(1, 2))]))
+  lhs <- format(c("", "", as.character(lhs), "", "", "", ""), justify = "right")
 
-  if(print.lhs)
+  if (print.lhs) {
     ans <- cbind(rowNames, lhs, constrs, ans, constrs, rhs)
-  else
+  } else {
     ans <- cbind(rowNames, ans, constrs, rhs)
+  }
 
   ans <- apply(ans, 1, paste, collapse = "  ")
   ans <- paste(ans, collapse = "\n")
@@ -63,5 +66,3 @@ print.lpExtPtr <- function(x, ...)
   cat(ans)
   invisible(x)
 }
-
-
